@@ -1,0 +1,1113 @@
+{
+  "name": "GilgitApp blog posts workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            },
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "list",
+          "cachedResultName": "arif_sehsanbaig Cloud Keywords",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 890493958,
+          "mode": "list",
+          "cachedResultName": "GilgitApp blog posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=890493958"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        64
+      ],
+      "id": "52e7d212-1966-47d7-9f12-9cefbb4afb7b",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "A7iMSoo6iMGNphI7",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a blog using this data:\nTitle: {{ $json.title }}\nMain Topic: {{ $json[\"Main Idea / Topic\"] }}\nSEO Keywords: {{ $json[\"SEO Keywords \"] }}\nImage Hint: {{ $json[\"image prompt\"] }}\nInstructions:\nWrite an engaging intro.\nAdd clear headings and sections.\nUse keywords naturally.\nEnd with a short conclusion.\nReturn output in this format:\n{\n  \"blog_title\": \"string\",\n  \"blog_body\": \"string\",\n  \"image_prompt\": \"string\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert content writer and SEO specialist. Your task is to create high-quality, detailed, and engaging blog posts for WordPress. \n- Use the main keyword and secondary keywords naturally.\n- Create a clear structure: Introduction, Explanation, Detailed Sections, Examples, and Conclusion.\n- Provide actionable insights where possible.\n- Write in a professional but reader-friendly style.\n- Ensure content is original and descriptive.\n- Output only valid JSON according to this schema:\n{\n  \"title\": \"string\",\n  \"slug\": \"string\",\n  \"meta_description\": \"string\",\n  \"sections\": [\n    {\n      \"heading\": \"string\",\n      \"paragraphs\": [\"string\"]\n    }\n  ],\n  \"keywords\": [\"string\"]\n}\n- Do NOT include explanations, newlines outside JSON, HTML tags, or extra text.\n- Escape quotes inside strings properly.\n- Always produce this exact JSON structure in every execution.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        64
+      ],
+      "id": "3e523b48-8e0a-4637-9b6f-3af941e5785d",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1233072-d5ee-473d-905f-4b410d3b26d3",
+              "name": "title",
+              "value": "={{ $json['Blog Title '] }}",
+              "type": "string"
+            },
+            {
+              "id": "1a00ee7c-e931-401e-8a65-21f384a8bf47",
+              "name": "Main Idea / Topic",
+              "value": "={{ $json['Main Idea / Topic'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f1b77bc-1a08-4ae6-a375-f5bace9b8e6c",
+              "name": "SEO Keywords ",
+              "value": "={{ $json['SEO Keywords '] }}",
+              "type": "string"
+            },
+            {
+              "id": "5fd09717-56ef-4b33-8d44-c4bde146dd80",
+              "name": "image prompt",
+              "value": "={{ $json['Image prompt (optional)'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        64
+      ],
+      "id": "df4cbcae-2510-4b9a-b94d-28860f608c27",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4577c3c4-069c-484b-92d6-b07e69f3110d",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        64
+      ],
+      "id": "b2cabefd-56d2-4ed0-bdf3-ebfad40cd323",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9d4b9bc5-a1d6-4ebf-a169-9d5bec21f6f2",
+              "leftValue": "={{ $json['Blog Title '] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "478eead6-0596-485f-9337-635dc433d247",
+              "leftValue": "={{ $json['Main Idea / Topic'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1de4defc-9c8c-4103-a8f9-6563e3ccc539",
+              "leftValue": "={{ $json['SEO Keywords '] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        64
+      ],
+      "id": "65c57ac8-1246-4052-bad0-468c05680d3b",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\"blog_title\", \"blog_body_html\", \"image_prompt\"],\n  \"properties\": {\n    \"blog_title\": {\n      \"type\": \"string\",\n      \"minLength\": 1\n    },\n    \"blog_body\": {\n      \"type\": \"string\",\n      \"minLength\": 1,\n      \"description\": \"Full blog content in string\"\n    },\n    \"image_prompt\": {\n      \"type\": \"string\",\n      \"minLength\": 1,\n      \"description\": \"Short descriptive prompt for blog thumbnail image\"\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        288
+      ],
+      "id": "1b05a38f-eecd-4a30-9896-b87b4264cd27",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        432,
+        288
+      ],
+      "id": "551c0ef3-ceb3-4ad2-b691-4d1db94c3614",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a complete AI image prompt for this blog post:\n\nTitle: {{ $json.output.blog_title }}\nInitial Image Prompt: {{ $json.output.image_prompt }}\n\nInclude all required elements in JSON: logo, background, text_overlay (headline and subheadline), and output settings.\nOutput only the JSON.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert AI that creates the best descriptive prompts for AI image generation. \nRead the blog title and image prompt. Generate a JSON output for a blog thumbnail image that includes the logo, background, text overlay, and output settings. \nEnsure high visual clarity, style, and composition suitable for a professional blog thumbnail."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        64
+      ],
+      "id": "7314fc95-ec01-4678-b917-9a1bce4c0f48",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"title\": \"AI Image Prompt Schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"blog_title\": {\n      \"type\": \"string\",\n      \"description\": \"Title of the blog post\"\n    },\n    \"image_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Initial AI prompt description of the image\"\n    },\n    \"ai_image_config\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"logo\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"file\": { \"type\": \"string\" },\n            \"position\": { \"type\": \"string\" },\n            \"size_percentage\": { \"type\": \"number\" },\n            \"transparent\": { \"type\": \"boolean\" }\n          },\n          \"required\": [\"file\", \"position\", \"size_percentage\", \"transparent\"]\n        },\n        \"background\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"scene\": { \"type\": \"string\" },\n            \"mood\": { \"type\": \"string\" },\n            \"lighting\": { \"type\": \"string\" },\n            \"composition\": { \"type\": \"string\" },\n            \"copy_space\": { \"type\": \"string\" }\n          },\n          \"required\": [\"scene\", \"mood\", \"lighting\", \"composition\", \"copy_space\"]\n        },\n        \"text_overlay\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"headline\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"text\": { \"type\": \"string\" },\n                \"font\": { \"type\": \"string\" },\n                \"style\": { \"type\": \"string\" },\n                \"color\": { \"type\": \"string\" },\n                \"background_box\": { \"type\": \"string\" },\n                \"size_ratio\": { \"type\": \"number\" }\n              },\n              \"required\": [\"text\", \"font\", \"style\", \"color\", \"background_box\", \"size_ratio\"]\n            },\n            \"subheadline\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"text\": { \"type\": \"string\" },\n                \"font\": { \"type\": \"string\" },\n                \"style\": { \"type\": \"string\" },\n                \"color\": { \"type\": \"string\" },\n                \"size_ratio\": { \"type\": \"number\" },\n                \"separator\": { \"type\": \"string\" }\n              },\n              \"required\": [\"text\", \"font\", \"style\", \"color\", \"size_ratio\", \"separator\"]\n            }\n          },\n          \"required\": [\"headline\", \"subheadline\"]\n        },\n        \"output\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"format\": { \"type\": \"string\" },\n            \"resolution\": { \"type\": \"string\" }\n          },\n          \"required\": [\"format\", \"resolution\"]\n        }\n      },\n      \"required\": [\"logo\", \"background\", \"text_overlay\", \"output\"]\n    }\n  },\n  \"required\": [\"blog_title\", \"image_prompt\", \"ai_image_config\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        288
+      ],
+      "id": "489f2231-005f-45cb-96b8-6b76ceafd69d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1696,
+        64
+      ],
+      "id": "be89975a-4926-49b7-85aa-01966a8e11bc",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        -16
+      ],
+      "id": "75163c41-1f6d-426e-9379-d906d503cb0f",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2144,
+        160
+      ],
+      "id": "2b3c536e-f0ca-414d-8c1c-c059bf2746c2",
+      "name": "Wait",
+      "webhookId": "9d89ea84-4c96-47b0-829c-c0a31561faca"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3de9ae14-a223-4181-ad2f-297898eb8a30",
+              "name": "data.resultJson",
+              "value": "={{ $('If').item.json.data.resultJson }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2592,
+        -64
+      ],
+      "id": "46eede1b-1294-4ca9-8acc-0224d463a27e",
+      "name": "url"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the nested JSON string\nconst resultJson = JSON.parse($input.first().json.data.resultJson);\n\n// Get the first URL from resultUrls array\nconst imageUrl = resultJson.resultUrls[0];\n\n// Return it\nreturn [\n  {\n    json: {\n      url: imageUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2816,
+        -64
+      ],
+      "id": "7abba29e-3fb8-4400-bd85-a99f70d9bada",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3040,
+        -64
+      ],
+      "id": "35656948-ed3b-4893-8f5a-b612447cfaa4",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.prompt }}, Place the logo in the top-right corner, sized at 8% of the image width, using this exact image as the logo: https://drive.google.com/uc?export=download&id=1gMMCs-tXuLny63KjO3fI_Ru0eLJRe4A8\",\n    \"aspect_ratio\": \"16:9\",\n    \"resolution\": \"1K\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=1yWOaiozEMYQak6K2loYqNM6WqbjpFqkj\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1472,
+        64
+      ],
+      "id": "47f065d3-abc5-48b4-99db-5e326a8a9e06",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate the full AI image prompt for this blog thumbnail based on the user JSON:\n\n{{$json.toJsonString()}}\n\nOutput format must be:\n\n{\n  \"prompt\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert AI that converts structured blog and image data into a single professional image generation prompt. \nRead the user input JSON containing blog_title, image_prompt, and ai_image_config (logo, background, text_overlay, output). \nYour task is to produce a single clear, creative, and highly detailed prompt string suitable for AI image generation of a blog thumbnail. \nAlways explicitly mention the logo URL in the prompt text so the AI uses it as the logo. \nInclude all visual elements: logo placement, background scene, mood, lighting, composition, copy space, headline and subheadline styling. \nDo NOT include technical fields like aspect_ratio, resolution, or output_format in the prompt. \nOutput ONLY a JSON with one key: \"prompt\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        64
+      ],
+      "id": "babc3687-3665-473a-ade6-90ccf002b957",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        288
+      ],
+      "id": "cb23de5c-33ae-44a0-8406-079c03d48fd0",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"title\": \"AI Image Prompt Output\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Full descriptive AI image generation prompt including logo, background, text overlay, and styling details.\"\n    }\n  },\n  \"required\": [\"prompt\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1264,
+        288
+      ],
+      "id": "e04c70fe-d339-4f40-a4de-bb8aa41b9983",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Edit Fields2').item.json.title }} Thumbnail",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('media folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3264,
+        -64
+      ],
+      "id": "bf2f20c1-f903-4673-a95c-93d0efa04e63",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Media",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2368,
+        -64
+      ],
+      "id": "fe87a279-5892-4893-9f56-f08f868b4a8d",
+      "name": "media folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "={{ $('AI Agent3').item.json.output.blog_title }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1gRyJ7CvawKzCaTLwJGBAbovWDVbniRtb",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2144,
+        -64
+      ],
+      "id": "442f54cf-ab6e-47f3-834b-f5da09c16645",
+      "name": "Blog folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b5b651f-2dbb-4739-9bed-37f07a9c095d",
+              "name": "title",
+              "value": "={{ $('AI Agent3').item.json.output.blog_title }}",
+              "type": "string"
+            },
+            {
+              "id": "3ea40339-f1d8-48c5-bf49-170df1a646fe",
+              "name": "body content",
+              "value": "={{ $('AI Agent3').item.json.output.blog_body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3488,
+        -64
+      ],
+      "id": "237b9ca5-8dbe-43c3-a448-252e66915669",
+      "name": "data"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        3936,
+        -64
+      ],
+      "id": "967fdc9d-de3c-4155-8789-99f696a60ebb",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b342a66-57ef-4747-bf5d-23817c0413db",
+              "name": "data",
+              "value": "=Tittle :  {{ $json.title }}\nbody content : {{ $json[\"body content\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3712,
+        -64
+      ],
+      "id": "29057e1e-76de-4cad-be5a-fdf00ab92d55",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Edit Fields2').item.json.title }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Blog folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4160,
+        -64
+      ],
+      "id": "860afea6-4f38-46c7-bb88-9c612467a000",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## GilgitApp blog posts\n**GilgitApp blog posts workflow**",
+        "height": 1232,
+        "width": 5504
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -736,
+        -528
+      ],
+      "typeVersion": 1,
+      "id": "8bf27f14-0d79-4b08-aae0-3b43ed6a8074",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 890493958,
+          "mode": "list",
+          "cachedResultName": "GilgitApp blog posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=890493958"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').item.json.ID }}",
+            "Status": "published"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Blog Title ",
+              "displayName": "Blog Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Idea / Topic",
+              "displayName": "Main Idea / Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords ",
+              "displayName": "SEO Keywords ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Image prompt (optional)",
+              "displayName": "Image prompt (optional)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Blog Link",
+              "displayName": "Blog Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4384,
+        -64
+      ],
+      "id": "a02f137a-8991-4771-8457-fd9acfe0866e",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Blog folder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "media folder": {
+      "main": [
+        [
+          {
+            "node": "url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog folder": {
+      "main": [
+        [
+          {
+            "node": "media folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "951bff63-577b-42c2-a597-1321375f3512",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f69eeec8ea9daa545fcc324365536c2040645353f7993a4239619466c43daea"
+  },
+  "id": "ol1rRMzdrYmzSzB6",
+  "tags": []
+}

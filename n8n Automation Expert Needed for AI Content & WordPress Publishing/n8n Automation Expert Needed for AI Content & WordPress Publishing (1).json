@@ -1,0 +1,1194 @@
+{
+  "name": "n8n Automation Expert Needed for AI Content & WordPress Publishing",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a complete blog post for WordPress based on the following details:\n\nTitle: {{ $json.title }}\nMain Keyword: {{ $json['blog KW'] }}\nsecondary KW:{{ $json['Secondar KW'] }}\n\nInstructions:\n- Write an engaging introduction explaining the topic and why it matters.\n- Explain key concepts clearly for both beginners and experienced readers.\n- Provide a detailed list or sections (e.g., top 10 frameworks) with explanation, use cases, pros/cons, and notable users.\n- Include tips on choosing the best option based on project requirements.\n- End with a conclusion summarizing key takeaways.\n- Ensure the blog post is descriptive, professional, and SEO-friendly.\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert content writer and SEO specialist. Your task is to create high-quality, detailed, and engaging blog posts for WordPress. \n- Use the main keyword and secondary keywords naturally.\n- Create a clear structure: Introduction, Explanation, Detailed Sections, Examples, and Conclusion.\n- Provide actionable insights where possible.\n- Write in a professional but reader-friendly style.\n- Ensure content is original and descriptive.\n- Output only valid JSON according to this schema:\n{\n  \"title\": \"string\",\n  \"slug\": \"string\",\n  \"meta_description\": \"string\",\n  \"sections\": [\n    {\n      \"heading\": \"string\",\n      \"paragraphs\": [\"string\"]\n    }\n  ],\n  \"keywords\": [\"string\"]\n}\n- Do NOT include explanations, newlines outside JSON, HTML tags, or extra text.\n- Escape quotes inside strings properly.\n- Always produce this exact JSON structure in every execution.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2448,
+        -336
+      ],
+      "id": "3b9a4bd8-e524-4954-a616-3db3936af91d",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a visual representation for a WordPress blog post titled \"{{ $('Edit Fields2').first().json.title }}\" with the main topic \"{{ $('Edit Fields2').first().json['blog KW'] }}\" and secondary topics \"{{ $('Edit Fields2').first().json['Secondar KW'] }}\".  \n\nThe image should include:\n- Flowcharts, diagrams, or graphics that explain the overall concept.\n- Key components, steps, or structure visually represented.\n- Professional and clear layout, suitable for blog readers.\n- Use distinct colors and labeled sections for clarity.\n\nOutput must be a JSON containing the image description only.\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI Image Prompt Generator. Your task is to generate detailed, clear, and visually descriptive prompts for creating images, diagrams, flowcharts, and graphics that explain concepts in WordPress blog posts. \n- Focus on clarity, structure, and visual storytelling.\n- Include colors, layout hints, and labels where relevant.\n- Output ONLY in the specified JSON format.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2096,
+        -240
+      ],
+      "id": "9bcdc91e-3b50-4ef4-be54-41b9f15d410e",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"full_image_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"All image prompt details combined into one string variable, including elements, layout, colors, labels, and image type, with no spaces\",\n      \"minLength\": 1\n    }\n  },\n  \"required\": [\"full_image_prompt\"]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1952,
+        -16
+      ],
+      "id": "98e221be-c90d-4b79-916e-7681cf4c4958",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1233072-d5ee-473d-905f-4b410d3b26d3",
+              "name": "title",
+              "value": "={{ $json['Blog Title '] }}",
+              "type": "string"
+            },
+            {
+              "id": "1a00ee7c-e931-401e-8a65-21f384a8bf47",
+              "name": "blog KW",
+              "value": "={{ $json['Blog KW'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f1b77bc-1a08-4ae6-a375-f5bace9b8e6c",
+              "name": "Secondar KW",
+              "value": "={{ $json['Secondary KW'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2896,
+        -240
+      ],
+      "id": "f347eacf-a383-487b-bf90-7bf71b793105",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4577c3c4-069c-484b-92d6-b07e69f3110d",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -3120,
+        -240
+      ],
+      "id": "84d58283-85cc-4587-97c6-4dea2d162d44",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        -2080,
+        -16
+      ],
+      "id": "2a3efe98-3656-4f50-99a4-e4b83ab9ff58",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/nano-banana\",\n  \"callBackUrl\": \"https://ehsanbaig.cloud/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $('AI Agent4').item.json.output.full_image_prompt }}\",\n     \"output_format\": \"jpeg\",\n \"image_size\": \"auto\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3568,
+        224
+      ],
+      "id": "ac0bd14f-d13b-4943-8c2f-bb54760aa801",
+      "name": "HTTP Request",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3344,
+        224
+      ],
+      "id": "8ebecb0e-3df5-4f33-bf63-0dfff7fae1cc",
+      "name": "HTTP Request1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3120,
+        144
+      ],
+      "id": "c9937b1f-6fdb-4c26-88b8-cd3ab7488c31",
+      "name": "If",
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2896,
+        320
+      ],
+      "id": "9f54b2fb-f5ec-48fa-9cc3-4a2a1922e8ff",
+      "name": "Wait",
+      "webhookId": "9d89ea84-4c96-47b0-829c-c0a31561faca",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3de9ae14-a223-4181-ad2f-297898eb8a30",
+              "name": "data.resultJson",
+              "value": "={{ $json.data.resultJson }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2896,
+        96
+      ],
+      "id": "118c49a0-7187-4163-9981-45c39629ba63",
+      "name": "url",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the nested JSON string\nconst resultJson = JSON.parse($input.first().json.data.resultJson);\n\n// Get the first URL from resultUrls array\nconst imageUrl = resultJson.resultUrls[0];\n\n// Return it\nreturn [\n  {\n    json: {\n      url: imageUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2672,
+        96
+      ],
+      "id": "a5a4fa6d-f965-45c5-a196-81fd46684403",
+      "name": "Code in JavaScript",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2448,
+        96
+      ],
+      "id": "df79485e-6fa9-4bde-ae75-8e0509553f15",
+      "name": "HTTP Request2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ehsanbaig.cloud/wp-json/wp/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "Basic YXJpZjpKY2VXIFB3Tk8gVG50WiBiNlZiIEQxSmYgOHM4RQ=="
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $('AI Agent3').first().json.output.title }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $('AI Agent3').item.json.output.title }},\n{{ $('AI Agent3').item.json.output.sections[0].heading }}\n\n{{ $('AI Agent3').item.json.output.sections[0].paragraphs[0] }}\n\n{{ $('AI Agent3').item.json.output.sections[0].paragraphs[1] }}\n\n{{ $('AI Agent3').item.json.output.sections[1].heading }}\n{{ $('AI Agent3').item.json.output.sections[1].paragraphs[0] }}\n\n{{ $('AI Agent3').item.json.output.sections[1].paragraphs[1] }}\n\n{{ $('AI Agent3').item.json.output.sections[2].heading }}\n\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[0] }}\n\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[1] }}\n\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[2] }}\n\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[3] }}\n\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[4] }}\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[5] }}\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[6] }}\n{{ $('AI Agent3').item.json.output.sections[2].paragraphs[7] }}\n\n{{ $('AI Agent3').item.json.output.sections[3].heading }}\n\n{{ $('AI Agent3').item.json.output.sections[3].paragraphs[0] }}\n{{ $('AI Agent3').item.json.output.sections[3].paragraphs[1] }}\n{{ $('AI Agent3').item.json.output.sections[3].paragraphs[2] }}\n{{ $('AI Agent3').item.json.output.sections[3].paragraphs[3] }}\n\n{{ $('AI Agent3').item.json.output.sections[4].heading }}\n\n{{ $('AI Agent3').item.json.output.sections[4].paragraphs[0] }}\n\n{{ $('AI Agent3').item.json.output.sections[4].paragraphs[1] }}\n\n{{ $('AI Agent3').item.json.output.sections[4].paragraphs[2] }}\n\n{{ $('AI Agent3').item.json.output.sections[4].paragraphs[3] }}\n\n\n{{ $('AI Agent3').item.json.output.sections[5].heading }}\n{{ $('AI Agent3').item.json.output.sections[5].paragraphs[0] }}\n\n{{ $('AI Agent3').item.json.output.sections[5].paragraphs[1] }}\n{{ $('AI Agent3').item.json.output.sections[5].paragraphs[2] }}\n{{ $('AI Agent3').item.json.output.sections[5].paragraphs[3] }}\n\n\n\n{{ $('AI Agent3').item.json.output.sections[6].heading }}\n\n{{ $('AI Agent3').item.json.output.sections[6].paragraphs[0] }}\n\n{{ $('AI Agent3').item.json.output.sections[6].paragraphs[1] }}\n\n{{ $('AI Agent3').item.json.output.sections[6].paragraphs[2] }}\n\n\n<------------------------------------------------>\n{{ $('AI Agent3').item.json.output.keywords[0] }}\n{{ $('AI Agent3').item.json.output.keywords[1] }}\n{{ $('AI Agent3').item.json.output.keywords[2] }}\n{{ $('AI Agent3').item.json.output.keywords[4] }}\n{{ $('AI Agent3').item.json.output.keywords[5] }}\n{{ $('AI Agent3').item.json.output.keywords[6] }}\n{{ $('AI Agent3').item.json.output.keywords[7] }}\n\n\n\n"
+            },
+            {
+              "name": "status",
+              "value": "draft"
+            },
+            {
+              "name": "slug",
+              "value": "={{ $('AI Agent3').first().json.output.slug }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1744,
+        -240
+      ],
+      "id": "4be86b10-223b-4f9d-afa3-e25a4af6f0fd",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ehsanbaig.cloud/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-disposition",
+              "value": "=attachment; filename=image-{{ $('AI Agent3').first().json.output.title }}.png"
+            },
+            {
+              "name": "content-type",
+              "value": "=image/png"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        -352
+      ],
+      "id": "20c7db7c-236e-4dac-8c95-34007e499d99",
+      "name": "HTTP Request4",
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "credentials": {
+        "wordpressApi": {
+          "id": "8Mh0gJY6AUyuwDBp",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://ehsanbaig.cloud/wp-json/wp/v2/posts/{{ $('HTTP Request3').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "status",
+              "value": "publish"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        48,
+        -352
+      ],
+      "id": "0576a4c8-271f-443f-a9fe-1217f00bf1bc",
+      "name": "HTTP Request6",
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "credentials": {
+        "wordpressApi": {
+          "id": "8Mh0gJY6AUyuwDBp",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "206ee734-8ce9-4b85-b3a7-8616d8aa072a",
+              "name": "fileid",
+              "value": "={{ $json.generated_files[0].url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -848,
+        -352
+      ],
+      "id": "91696a88-35f9-456f-b120-e1b29f629787",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const url = $input.first().json.fileid;         // full URL\nconst file_id = url.split(\"/file/\")[1];        // extract after \"/file/\"\nreturn [{ json: { file_id } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        -352
+      ],
+      "id": "5d26673e-1152-4e35-ad91-95c4c44d13b4",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.napkin.ai/v1/visual",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-bb60e9cdb72ef9a0fee249a82b2560c22bd6fc0f9d6b43974b947b9483a3e9f3"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"format\": \"png\",\n  \"content\": \"{{ $('AI Agent4').item.json.output.full_image_prompt }}\",\n  \"language\": \"en-US\",\n  \"style_id\": \"CDQPRVVJCSTPRBB7E9GP8TB5DST0\",\n  \"transparent_background\": true,\n  \"inverted_color\": false,\n  \"number_of_visuals\": 3,\n  \"width\": 1200,\n  \"height\": 800,\n  \"Visual_ID\": \"YC3A2MZXM2KWTIZENZV3ORKOXGTD3JXV\"\n}\n",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1520,
+        -240
+      ],
+      "id": "f570c837-489e-4e18-b4f3-0ec625e7a214",
+      "name": "HTTP Request11"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.napkin.ai/v1/visual/{{ $json.id }}/status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-bb60e9cdb72ef9a0fee249a82b2560c22bd6fc0f9d6b43974b947b9483a3e9f3"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1296,
+        -240
+      ],
+      "id": "a2361b8c-21cc-44c7-b15c-8f3005d85c17",
+      "name": "HTTP Request12"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.napkin.ai/v1/visual/{{ $('HTTP Request12').item.json.id }}/file/{{ $json.file_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "image/svg+xml"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-bb60e9cdb72ef9a0fee249a82b2560c22bd6fc0f9d6b43974b947b9483a3e9f3"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        -352
+      ],
+      "id": "6a4803e0-3877-44e6-a0b4-1807413fda3b",
+      "name": "HTTP Request13"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "efce75e0-7cf8-448c-b088-e9a3251fb693",
+              "leftValue": "={{ $json.generated_files[0].url }}",
+              "rightValue": "={{ $json.generated_files[0].url }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1072,
+        -304
+      ],
+      "id": "775a7c26-991a-4dd3-bed1-03eef52a6a33",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -848,
+        -144
+      ],
+      "id": "1b05d325-d033-4e9c-9c2f-5382440a9e99",
+      "name": "Wait1",
+      "webhookId": "81176ae1-a256-40f9-9bca-0ae15633e4a3"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "wordpress",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Filter').item.json.ID }}",
+            "Status": "published",
+            "Blog Link": "={{$json[\"link\"]}}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Blog Title ",
+              "displayName": "Blog Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Blog KW",
+              "displayName": "Blog KW",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Secondary KW",
+              "displayName": "Secondary KW",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Search Volume",
+              "displayName": "Search Volume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Blog Link",
+              "displayName": "Blog Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        272,
+        -352
+      ],
+      "id": "ff156705-8a9a-41f0-a49a-6a52af27e8c4",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "zCB8F0Ku9gu0v4Xz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9d4b9bc5-a1d6-4ebf-a169-9d5bec21f6f2",
+              "leftValue": "={{ $json['Blog Title '] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "478eead6-0596-485f-9337-635dc433d247",
+              "leftValue": "={{ $json['Blog KW'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1de4defc-9c8c-4103-a8f9-6563e3ccc539",
+              "leftValue": "={{ $json['Secondary KW'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3344,
+        -240
+      ],
+      "id": "36cc332b-bb5d-4d0e-9d57-9523489dfcbc",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\"title\", \"slug\", \"meta_description\", \"sections\", \"keywords\"],\n  \"properties\": {\n    \"title\": { \"type\": \"string\", \"minLength\": 1 },\n    \"slug\": { \"type\": \"string\", \"minLength\": 1 },\n    \"meta_description\": { \"type\": \"string\", \"minLength\": 1 },\n\n    \"sections\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\"heading\", \"paragraphs\"],\n        \"properties\": {\n          \"heading\": { \"type\": \"string\", \"minLength\": 1 },\n          \"paragraphs\": {\n            \"type\": \"array\",\n            \"minItems\": 1,\n            \"items\": { \"type\": \"string\", \"minLength\": 1 }\n          }\n        }\n      }\n    },\n\n    \"keywords\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": { \"type\": \"string\", \"minLength\": 1 }\n    }\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -2304,
+        -112
+      ],
+      "id": "ec3681a9-1758-495e-b7a1-5d29fa575202",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "content": "## n8n Automation Expert Needed for AI Content & WordPress Publishing\n\nBuilt an end-to-end n8n workflow for blog creation and auto-publishing.\n\nUses AI (Google Gemini / OpenAI) to generate blog ideas and full articles.\n\nFetches relevant images via Pexels API and maps them to posts.\n\nManages ideas, status, and logs using Google Sheets.\n\nPublishes content directly to WordPress (REST API).\n\nTriggered via n8n Forms with actions: generate article / add topic.\n\nIncludes error handling, retries, and content validation.\n\nOptimized for scalability and easy manual control.\n\n*Skills Highlighted:*\nn8n · AI Automation · Google Gemini · WordPress API · Pexels API · Google Sheets · Workflow Optimization",
+        "height": 1600,
+        "width": 4736
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4048,
+        -784
+      ],
+      "typeVersion": 1,
+      "id": "fdb8cf9a-2a23-4975-b8b9-a84fbe8d5ed8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        -2416,
+        -80
+      ],
+      "id": "94d9bf41-6c94-44d4-80b7-5be7aec1df5f",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            },
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "list",
+          "cachedResultName": "arif_sehsanbaig Cloud Keywords",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "wordpress",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -3536,
+        -240
+      ],
+      "id": "10b6a3bc-0169-4752-859d-197cdc1e4add",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "A7iMSoo6iMGNphI7",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "url",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request11": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request12": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request13": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4801f8ad-5cb8-4195-8468-ba768cdab7af",
+  "meta": {
+    "instanceId": "3f69eeec8ea9daa545fcc324365536c2040645353f7993a4239619466c43daea"
+  },
+  "id": "9UFH7sE9hdLniJ3o",
+  "tags": [
+    {
+      "createdAt": "2025-11-10T09:54:36.045Z",
+      "updatedAt": "2025-11-10T09:54:36.045Z",
+      "id": "1Xnj7QcYfBxXJNjo",
+      "name": "wordpress"
+    }
+  ]
+}
