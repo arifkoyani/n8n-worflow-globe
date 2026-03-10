@@ -1,0 +1,1442 @@
+{
+  "name": "GilgitApp Social Media Page Workflow (Done finalized)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## IndexPOS Social Media Page Workflow\n**IndexPOS Social Media Page Workflow**",
+        "height": 1232,
+        "width": 3744
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -272,
+        -3232
+      ],
+      "typeVersion": 1,
+      "id": "ec14b617-19e7-4115-b993-971bee9ac54d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a promotional caption using this data.\n\nBlog Title: {{$json[\"Blog Title \"]}}\nTopic: {{$json[\"Main Idea / Topic\"]}}\nSEO Keywords: {{$json[\"SEO Keywords \"]}}\n\nStyle Example:\n\"Dreaming of your next big road trip? 🚗🌟 Explore amazing cars on GilgitApp at prices that won’t break the bank. Adventure awaits!\"\n\nRequirements:\n- Caption similar style and length.\n- 3 SEO hashtags.\n- 1 simple Roman Urdu line related to the caption.\n\nReturn only JSON.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a social media marketing assistant.\n\nYour job is to generate short promotional captions for marketplace posts.\n\nRules:\n- Caption must be engaging, friendly, and promotional.\n- Length similar to: 15–25 words.\n- Use 1–2 relevant emojis.\n- Tone: exciting and inviting.\n- Based on the blog title, topic, and keywords.\n\nAlso generate:\n1. Exactly 3 SEO hashtags related to the topic.\n2. One simple Roman Urdu line related to the caption.\n\nOutput must strictly follow the JSON schema.\nDo not add explanations.\nDo not add extra text outside JSON."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        -2464
+      ],
+      "id": "1eb931b1-8a3d-402c-af05-667bd3a48904",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"caption\": {\n      \"type\": \"string\"\n    },\n    \"hashtags\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"minItems\": 3,\n      \"maxItems\": 3\n    },\n    \"user_line\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\"caption\", \"hashtags\", \"user_line\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1008,
+        -2240
+      ],
+      "id": "4b0475fc-bc26-48aa-9052-a77015e48657",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -2240
+      ],
+      "id": "9ec7f278-b399-407e-908a-7b17a95a83af",
+      "name": "DeepSeek Chat Model2",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1792,
+        -2464
+      ],
+      "id": "5842d9e4-c0da-484f-941b-1f4ecd8b245f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        -2528
+      ],
+      "id": "f471b82a-19a3-4f8a-9fa1-492d92880669",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        -2368
+      ],
+      "id": "f746d2b0-1613-4457-8bf4-144f77e126b7",
+      "name": "Wait1",
+      "webhookId": "57dfd6ce-890c-4114-80f9-2bd1a5280fbe"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.image_prompt }}, Place the logo in the top-right corner, sized at 6% of the image width, using this exact image as the logo: https://drive.google.com/uc?export=download&id=1gMMCs-tXuLny63KjO3fI_Ru0eLJRe4A8\",\n        \"aspect_ratio\": \"5:4\",\n      \"google_search\": false,\n      \"resolution\": \"1K\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=1gMMCs-tXuLny63KjO3fI_Ru0eLJRe4A8\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1568,
+        -2464
+      ],
+      "id": "216070e5-137b-4748-9f2c-28f434c35179",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a full AI image generation prompt for a GilgitApp marketing banner.\n\nInput Data:\nBlog Title: {{ $('Switch').item.json['Blog Title '] }}\nTopic:{{ $('Switch').item.json['Main Idea / Topic'] }}\nSEO Keywords: {{ $('Switch').item.json['SEO Keywords '] }}\nDesign Requirements:\n- Use the exact design structure, spacing, color scheme, and layout provided in the reference concept\n- White background with subtle watermark pattern\n- Left side: headline + subheadline + download section\n- Right side: angled smartphone mockup showing marketplace listings\n- Replace the listing UI with smartphones related to the topic\n- Maintain professional tech review visual style\n- Keep the same spacing, typography hierarchy, and UI structure\n\nContent Rules:\n- Generate a marketing Headline from the blog title\n- Generate a Subheadline related to item according to topic,\n- The phone screen UI must show smartphone listings\nReturn only JSON.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI design prompt generator for marketing banners.\n\nYour task is to generate a **full AI image prompt** for a GilgitApp marketplace banner while keeping the **exact same design concept, structure, colors, layout, and UI style** described below.\n\nImportant rules:\n- The generated prompt must strictly follow the same design structure.\n- Do NOT include logo instructions in the generated image prompt.\n- Do NOT include size measurements in the generated image prompt.\n- Keep the same layout, colors, typography style, spacing logic, and UI structure.\n- Only change the **headline, subheadline, and marketplace listing content** according to the input topic.\n- The right side must always show an **angled smartphone mockup displaying marketplace listings**.\n- The design must look like a **clean professional marketplace advertisement**.\n\nDesign Concept (must stay the same):\n\nCanvas & Layout:\n- Clean white background with a subtle repeating watermark pattern using faint word “gilgitApp” characters scattered randomly across the background.\n- Split layout composition.\n- Left side contains the marketing text content.\n- Right side contains an angled smartphone mockup displaying the marketplace UI.\n\nColor System:\n- Background: pure white.\n- Watermark pattern: very light gray transparent “g” characters.\n- Headline highlight bar: bright yellow.\n- Headline text: bold black.\n- Subheadline text: dark black.\n- Phone frame color: deep forest green.\n- Phone screen background: white.\n- Search bar: light gray.\n- Active filter tab: blue.\n- Inactive tabs: light gray pills.\n- Price text: bold black.\n- Metadata text such as dates and details: light gray.\n- Icons such as location pin: gray.\n- Download section text: bold black.\n- App store badges: black rounded rectangles.\n\nLeft Content Area:\n- A bright yellow highlight bar behind the headline text.\n- Bold marketing headline text inside the yellow bar.\n- Below it a supporting subheadline written in two lines.\n- At the bottom-left area include a download section containing the text encouraging users to download the app and two marketplace app badges.\n\nRight Content Area:\n- A smartphone mockup angled slightly to create a dynamic perspective.\n- Deep green phone frame with soft shadow beneath it.\n- The phone screen displays a marketplace listing interface.\n\nPhone Screen UI Structure:\n- Status bar at the top.\n- Header title related to the marketplace section.\n- A rounded search bar.\n- Filter tab row with one active tab and other inactive tabs.\n- Small label text indicating related results.\n- A grid layout showing four product listings.\n\nListing Card Structure:\nEach card includes:\n- Product image\n- Heart/favorite icon\n- Bold price text\n- Product title\n- Location with location pin icon\n- Date text\n- View count with eye icon\n\nDownload Section:\n- A text line encouraging users to download the app.\n- Two app store badges displayed horizontally.\n- this section must be the sized at 6% of the image width\n\nDesign Principles:\n- Asymmetric layout with text on the left and phone on the right.\n- Yellow headline bar is the primary visual attention point.\n- Subtle watermark pattern reinforces branding without distraction.\n- Angled phone adds motion and visual interest.\n- Clean minimal layout with strong visual hierarchy.\n\nOutput Requirements:\n- Generate a **Headline** derived from the blog title.\n- Generate a **Subheadline** related to the topic.\n- Generate the **full AI image prompt** using the design concept above.\n- The generated prompt must maintain the same visual structure and style.\n- Do not include logo instructions.\n- Do not include size measurements.\n- Output must follow the required JSON schema only."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        -2464
+      ],
+      "id": "429c666e-c2f6-4b12-bbf3-50eeaf847c5f",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        -2240
+      ],
+      "id": "11b45478-134e-424d-8b97-e843bc5efade",
+      "name": "DeepSeek Chat Model3",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"headline\": {\n      \"type\": \"string\",\n      \"description\": \"Main banner headline generated from the blog title\"\n    },\n    \"subheadline\": {\n      \"type\": \"string\",\n      \"description\": \"Short supporting marketing text related to the topic\"\n    },\n    \"image_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Full detailed AI image generation prompt including layout, colors, typography, UI structure, smartphone mockup, and marketplace listings\"\n    }\n  },\n  \"required\": [\"headline\", \"subheadline\", \"image_prompt\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1360,
+        -2240
+      ],
+      "id": "bac25b54-8cb6-4a85-b152-55527967154a",
+      "name": "Structured Output Parser5"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 457015230,
+          "mode": "list",
+          "cachedResultName": "GilgitApp social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=457015230"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').first().json.ID }}",
+            "Status": "published"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Blog Title ",
+              "displayName": "Blog Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Idea / Topic",
+              "displayName": "Main Idea / Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords ",
+              "displayName": "SEO Keywords ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Image prompt (optional)",
+              "displayName": "Image prompt (optional)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "resolution",
+              "displayName": "resolution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Blog Link",
+              "displayName": "Blog Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2688,
+        -2576
+      ],
+      "id": "01a700d8-bdcc-4ca2-ac94-953b8a71c59e",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"ai_image_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"A complete, detailed AI image generation prompt for a GilgitApp Twitter/X Tweet Card mockup.\"\n    }\n  },\n  \"required\": [\"ai_image_prompt\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1360,
+        -2768
+      ],
+      "id": "d60a9035-cd2d-4cd8-a44f-fbc06eda72b3",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        -2768
+      ],
+      "id": "bd414972-2bf6-4f22-9231-69f07ee1d6af",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate the full AI image prompt for a GilgitApp marketing Tweet Card using the data below.\n\nUse the exact Twitter/X card mockup style as described in the system instructions.\n\nInput data:\n\nText on image: {{ $('Switch').item.json['Text on Image'] }}\n\nSEO keywords / Hashtags: {{ $('Switch').item.json['SEO Keywords '] }}\n\nImportant rules:\n\nUse the uploaded logo for GilgitApp (do NOT describe the logo)\n\nInclude the tweet text and hashtags clearly\n\nOutput only valid JSON\n\nOutput format:\n\n{\n  \"ai_image_prompt\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI image prompt engineer creating a high-fidelity Twitter/X Tweet Card mockup for GilgitApp.\n\nYour task is to generate a single, complete AI image prompt that exactly recreates a realistic Twitter/X post card.\n\n🎯 Core Requirements\n\nPlatform style: Twitter / X\n\nCanvas size:\n\nMinimal, premium, realistic UI look\n\nClean spacing, strong contrast, no clutter\n\n🖤 Background\n\nFull canvas background: very dark charcoal (#0D0D0D)\n\nFlat dark look with subtle grain / noise texture (15–20%)\n\nOptional slight vignette (edges slightly darker)\n\nNo gradients, no patterns\n\n🤍 Tweet Card\n\nWhite rounded rectangle card\n\nSize:\n\nCentered horizontally, slightly above vertical center\n\nCorner radius: ~20px\n\nDrop shadow: soft, dark, diffuse\n\nInternal padding: ~34px\n\n👤 Header Row\n\nLeft: circular profile icon (use uploaded logo)\n\nUsername: GilgitApp (bold, black)\n\nHandle: @gilgitapp (gray, below username)\n\nVerified badge: Twitter blue check\n\nTop-right: three-dot menu icon\n\n📝 Tweet Content\n\nMain tweet text = Text on image input\n\nFont: system UI (Twitter/X style)\n\nColor: near black\n\nNatural 2-line wrap\n\nClear, readable hierarchy\n\n🔵 Hashtags\n\nUse SEO keywords / hashtags input\n\nColor: Twitter blue\n\nSingle line, clean spacing\n\n🚫 Restrictions\n\nDo NOT describe the logo\n\nDo NOT add extra elements\n\nDo NOT add footers, borders, or watermarks\n\nDo NOT explain anything\n\n✅ Output Rule\n\nReturn only JSON with one field:\n\n{\n  \"ai_image_prompt\": \"...\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        -2992
+      ],
+      "id": "de5dcba2-6f02-4cd3-9c6a-a0c60655ab5d",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.ai_image_prompt }},Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo : https://drive.google.com/uc?export=download&id=10gt3b8P0YNcCPtB7cv8H6nNBYHbc8nEB\",\n    \"aspect_ratio\": \"1:1\",\n      \"resolution\": \"1K\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=10gt3b8P0YNcCPtB7cv8H6nNBYHbc8nEB\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1568,
+        -2896
+      ],
+      "id": "332f0443-8a91-43d4-9122-6dea7e60d598",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        -2800
+      ],
+      "id": "ad076933-8e6e-4f4b-ac17-40a4819a2105",
+      "name": "Wait",
+      "webhookId": "6c972165-36ac-4bab-b7cf-9eed8ab77174"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        -2960
+      ],
+      "id": "7f2bb635-c663-400b-b204-cf4b8d137aa9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1792,
+        -2896
+      ],
+      "id": "283a07b9-cfb9-44f4-ba97-f2d1cd4cde3b",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -2768
+      ],
+      "id": "711a59f3-010b-4257-8f01-f17f7a14db70",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"facebook_post\": {\n      \"type\": \"string\",\n      \"description\": \"Facebook post text for GilgitApp, generated in English or Urdu based on input language.\"\n    }\n  },\n  \"required\": [\"facebook_post\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1008,
+        -2768
+      ],
+      "id": "f4dfe8e9-e6fa-489d-8d48-40cca75165f3",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9d4b9bc5-a1d6-4ebf-a169-9d5bec21f6f2",
+              "leftValue": "={{ $json['Blog Title '] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "478eead6-0596-485f-9337-635dc433d247",
+              "leftValue": "={{ $json['Main Idea / Topic'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1de4defc-9c8c-4103-a8f9-6563e3ccc539",
+              "leftValue": "={{ $json['SEO Keywords '] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -2672
+      ],
+      "id": "7c1145fb-ea59-464a-a0c1-7441c459d303",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4577c3c4-069c-484b-92d6-b07e69f3110d",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -2672
+      ],
+      "id": "77b71a40-7f46-4a4e-b2ed-98b8d409efb2",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a Facebook post text for GilgitApp using the following input JSON:\n\nPost title: {{ $json['Blog Title '] }}\nMain idea: {{ $json['Main Idea / Topic'] }}\nSEO keywords: {{ $json['SEO Keywords '] }}\n\nAbout GilgitApp:\nGilgitApp is a free online marketplace where users can buy and sell cars, bikes, mobiles, laptops, property, and more.\n\nOutput Format (JSON only):\n\n{\n  \"facebook_post\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a social media AI content generator for GilgitApp.\n\nGilgitApp is a free online marketplace that allows users to buy and sell:\n\nCars\n\nBikes\n\nMobiles\n\nLaptops\n\nProperty\n\nOther local products\n\n🎯 Your Task\n\nCreate a Facebook post text using only the data provided in the input JSON.\n\n📌 Rules\n\nUse only these input fields:\n\nBlog Title\n\nMain Idea / Topic\n\nSEO Keywords\n\nHighlight:\n\nFree marketplace\n\nEasy buying & selling\n\nLocal trust and convenience\n\nInclude a clear Call-to-Action (CTA)\n(e.g., Explore now, Post free ad, Buy & sell today)\n\nAdd exactly 5 high-SEO hashtags at the end\n(related to marketplace, buying, selling, GilgitApp)\n\nDo not add explanations or extra text.\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph.\nOutput only valid JSON in this format:\n\n{\n  \"facebook_post\": \"...\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        -2992
+      ],
+      "id": "d0197e4b-6a0c-44cf-abf9-14f3d31e783d",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            },
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA",
+          "mode": "list",
+          "cachedResultName": "arif_ai_automations",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 476149918,
+          "mode": "list",
+          "cachedResultName": "GilgitApp social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit#gid=476149918"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -2672
+      ],
+      "id": "9baffc8e-e602-4a24-88f4-ccca884e1331",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "KNbkDQizMR80fWCK",
+          "name": "ehsan@uconnect.pk"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "height": 528,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3504,
+        -2880
+      ],
+      "typeVersion": 1,
+      "id": "e36fd6cc-21ab-4605-b72b-07cd139991ee",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer m8rmXLG5Ux3vSEw0gs3E8OsWlOTcWFETu4FRXx8faHF"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $('AI Agent3').item.json.output.facebook_post }}\\\", channelId: \\\"62000dafc2bd2585f9011a72\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $json.url }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2464,
+        -3008
+      ],
+      "id": "25ed6b45-be83-4ec5-9a8d-0367e742e02b",
+      "name": "GilgitApp Integrations"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Type }}",
+                    "rightValue": "twitter",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b398948d-ca64-43d7-8481-e02eef3835c7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Twitter"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "87b76a67-5593-4082-b9f7-1c3cca550d0c",
+                    "leftValue": "={{ $json.Type }}",
+                    "rightValue": "static post",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Static Post"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        640,
+        -2672
+      ],
+      "id": "9a79d6cb-5907-415c-b8eb-daa0240895ac",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = JSON.parse($input.first().json.data.resultJson);\nreturn [{ url: data.resultUrls[0] }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        -3008
+      ],
+      "id": "06d49b61-1d10-41ed-b1e9-0315ddd8ea26",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = JSON.parse($input.first().json.data.resultJson);\nreturn [{ url: data.resultUrls[0] }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        -2576
+      ],
+      "id": "c8e43d09-6749-4492-94b8-68acbb9f0657",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer m8rmXLG5Ux3vSEw0gs3E8OsWlOTcWFETu4FRXx8faHF"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $('AI Agent4').first().json.output.caption }},{{ $('AI Agent4').first().json.output.user_line }},{{ \"#\"+$('AI Agent4').first().json.output.hashtags[0] }},{{ \"#\"+$('AI Agent4').first().json.output.hashtags[1] }} ,{{ \"#\"+$('AI Agent4').first().json.output.hashtags[2] }}\\\", channelId: \\\"62000dafc2bd2585f9011a72\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $json.url }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2464,
+        -2576
+      ],
+      "id": "2b5b857c-2b14-4485-938e-285385079337",
+      "name": "GilgitApp Integrations1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 457015230,
+          "mode": "list",
+          "cachedResultName": "GilgitApp social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=457015230"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').first().json.ID }}",
+            "Status": "published"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Blog Title ",
+              "displayName": "Blog Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Idea / Topic",
+              "displayName": "Main Idea / Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords ",
+              "displayName": "SEO Keywords ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Image prompt (optional)",
+              "displayName": "Image prompt (optional)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "resolution",
+              "displayName": "resolution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2688,
+        -3008
+      ],
+      "id": "f77caa0a-f557-4aee-a7b7-9110a06b706a",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "HTTP Request3": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "f4efcf99038b322eb7964b0ebc0eb3ce",
+            "recordId": "f4efcf99038b322eb7964b0ebc0eb3ce"
+          }
+        }
+      }
+    ],
+    "HTTP Request1": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "f4efcf99038b322eb7964b0ebc0eb3ce",
+            "model": "nano-banana-pro",
+            "state": "success",
+            "param": "{\"input\":\"{\\\"image_input\\\":[\\\"https://drive.google.com/uc?export=download&id=10gt3b8P0YNcCPtB7cv8H6nNBYHbc8nEB\\\"],\\\"aspect_ratio\\\":\\\"1:1\\\",\\\"output_format\\\":\\\"png\\\",\\\"prompt\\\":\\\"A realistic Twitter/X Tweet Card mockup for GilgitApp. Full canvas background: very dark charcoal (#0D0D0D) with subtle grain texture (15-20%) and slight vignette at edges. Centered on canvas, a white rounded rectangle card with ~20px corner radius, ~340px wide, ~220px tall, positioned slightly above vertical center. Card has soft, dark, diffuse drop shadow. Internal padding ~34px. Header row at top: left side has circular profile icon (GilgitApp logo), username 'GilgitApp' in bold black font, handle '@gilgitapp' in gray below username, Twitter blue verified checkmark. Top-right: three-dot menu icon. Tweet content: 'Udhaar ka masla ab simple - reminder bhejta hai GilgitApp Shops.' in near-black system UI font, natural 2-line wrap, clear readable hierarchy. Below tweet text: hashtags '#BestmobileinPakistan #mobiles #smartphonesinPakistan' in Twitter blue color, single line with clean spacing. Minimal, premium, realistic UI look with clean spacing and strong contrast. No gradients, no patterns, no footers, no borders, no watermarks.,Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo : https://drive.google.com/uc?export=download&id=10gt3b8P0YNcCPtB7cv8H6nNBYHbc8nEB\\\",\\\"resolution\\\":\\\"1K\\\"}\",\"callBackUrl\":\"https://your-domain.com/api/callback\",\"model\":\"nano-banana-pro\"}",
+            "resultJson": "{\"resultUrls\":[\"https://tempfile.aiquickdraw.com/workers/nano/image_1772812940988_rf5qh2.png\"]}",
+            "failCode": null,
+            "failMsg": null,
+            "costTime": 29,
+            "completeTime": 1772812942403,
+            "createTime": 1772812913273
+          }
+        }
+      }
+    ],
+    "AI Agent5": [
+      {
+        "json": {
+          "output": {
+            "headline": "Top 10 Mobile Phones Under 50,000 in Pakistan",
+            "subheadline": "Find the best smartphones with verified prices, specs, and seller ratings",
+            "image_prompt": "A clean professional marketplace advertisement banner with split layout composition. On a pure white background with a subtle repeating watermark pattern using faint lowercase 'g' characters scattered randomly across the background. Left side contains marketing text content. Right side contains an angled smartphone mockup displaying marketplace UI. Color system: Background pure white, watermark pattern very light gray transparent 'g' characters, headline highlight bar bright yellow, headline text bold black, subheadline text dark black, phone frame color deep forest green, phone screen background white, search bar light gray, active filter tab blue, inactive tabs light gray pills, price text bold black, metadata text such as dates and details light gray, icons such as location pin gray, download section text bold black, app store badges black rounded rectangles. Left content area: A bright yellow highlight bar behind the headline text containing 'Top 10 Mobile Phones Under 50,000 in Pakistan' in bold black text. Below it a supporting subheadline in two lines: 'Find the best smartphones with verified prices, specs, and seller ratings' in dark black text. At the bottom-left area include a download section containing the text 'Download GilgitApp Now' and two marketplace app badges displayed horizontally. Right content area: A smartphone mockup angled slightly to create a dynamic perspective. Deep green phone frame with soft shadow beneath it. The phone screen displays a smartphone marketplace listing interface. Phone screen UI structure: Status bar at the top. Header title 'Smartphones Under 50,000'. A rounded search bar with placeholder text 'Search smartphones...'. Filter tab row with 'Latest' as active blue tab and other inactive tabs 'Popular', 'Top Rated', 'Best Deals'. Small label text 'Showing 4 of 10 results'. A grid layout showing four smartphone product listings. Each listing card includes: Product image showing modern smartphones, heart/favorite icon in top-right corner, bold price text like 'PKR 49,999', product title like 'Samsung Galaxy A55', location with location pin icon 'Lahore', date text '2 days ago', view count with eye icon '245 views'. Second listing: smartphone image, price 'PKR 47,500', title 'Xiaomi Redmi Note 13 Pro', location 'Karachi', date '1 day ago', views '189 views'. Third listing: smartphone image, price 'PKR 45,999', title 'Infinix Zero 30', location 'Islamabad', date '3 days ago', views '156 views'. Fourth listing: smartphone image, price 'PKR 48,800', title 'OPPO Reno 10', location 'Rawalpindi', date 'Today', views '98 views'. Design principles: Asymmetric layout with text on the left and phone on the right. Yellow headline bar is the primary visual attention point. Subtle watermark pattern reinforces branding without distraction. Angled phone adds motion and visual interest. Clean minimal layout with strong visual hierarchy. Professional tech review visual style with precise spacing and typography hierarchy."
+          }
+        }
+      }
+    ],
+    "HTTP Request5": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "95317cda8fa0766586eead4a2c8d266c",
+            "recordId": "95317cda8fa0766586eead4a2c8d266c"
+          }
+        }
+      }
+    ],
+    "AI Agent4": [
+      {
+        "json": {
+          "output": {
+            "caption": "Looking for the perfect smartphone? 📱✨ Discover the top 10 mobile phones under 50000 in Pakistan with amazing features and unbeatable value!",
+            "hashtags": [
+              "BestMobileInPakistan",
+              "SmartphonesInPakistan",
+              "MobilePhones"
+            ],
+            "user_line": "Apna dream phone abhi khareedain, bina budget break kiye!"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser5": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GilgitApp Integrations1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GilgitApp Integrations": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e40e806a-68ed-4725-8676-c5b4e4c3242d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f69eeec8ea9daa545fcc324365536c2040645353f7993a4239619466c43daea"
+  },
+  "id": "eVqSmmpLeDM5TinF",
+  "tags": []
+}

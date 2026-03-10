@@ -1,0 +1,1429 @@
+{
+  "name": "QuoHR Social Media Page Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            },
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA",
+          "mode": "list",
+          "cachedResultName": "arif_ai_automations",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1482449830,
+          "mode": "list",
+          "cachedResultName": "QuoHR social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit#gid=1482449830"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -40
+      ],
+      "id": "4f927d29-ae6f-41be-8ef6-c6c2282dca40",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "KNbkDQizMR80fWCK",
+          "name": "ehsan@uconnect.pk"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a Facebook post using the following inputs:\n\nPost Goal: {{ $json['Post Goal'] }}\nMain Hook: {{ $json['Main Hook'] }}\nCore Message:{{ $json['Core Message'] }}\nKey Features: {{ $json['Key Features'] }}\nBenefit: {{ $json['Benefit (optinal)'] }}\n\nOutput only the final Facebook post text.\nlike this,\n{\n  \"facebook_post\": \"string\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a marketing content writer for QuoHR.\nQuoHR provides comprehensive HR management solutions that improve business productivity and drive organizational efficiency.\nYour task is to generate a Facebook post promoting QuoHR.\nUse simple English, professional tone, and short paragraphs.\nKeep the content under 900 characters.\nHighlight ease of HR, productivity, and efficiency.\nInclude high SEO relevant hashtags.\nOutput only the final Facebook post text.\nDo not add explanations.\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -144
+      ],
+      "id": "13fe4128-7a7d-4eed-93df-dc0054c4c74c",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1233072-d5ee-473d-905f-4b410d3b26d3",
+              "name": "Post Goal",
+              "value": "={{ $json['Post Goal'] }}",
+              "type": "string"
+            },
+            {
+              "id": "1a00ee7c-e931-401e-8a65-21f384a8bf47",
+              "name": "Main Hook",
+              "value": "={{ $json['Main Hook'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f1b77bc-1a08-4ae6-a375-f5bace9b8e6c",
+              "name": "Core Message",
+              "value": "={{ $json['Core Message'] }}",
+              "type": "string"
+            },
+            {
+              "id": "5fd09717-56ef-4b33-8d44-c4bde146dd80",
+              "name": "Key Features",
+              "value": "={{ $json['Key Features'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d04bd475-fe38-4359-ab0b-98a76ec36e17",
+              "name": "Benefit (optinal)",
+              "value": "={{ $json['Benefit (optinal)'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2e873212-a94f-4c13-a335-fc712f6d456f",
+              "name": "Text on Image",
+              "value": "={{ $json['Text on Image'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        -40
+      ],
+      "id": "0e481520-abac-430c-9d42-7e9e5c571b80",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4577c3c4-069c-484b-92d6-b07e69f3110d",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        -40
+      ],
+      "id": "2e774968-f691-4471-be9b-0619ca4b9069",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9d4b9bc5-a1d6-4ebf-a169-9d5bec21f6f2",
+              "leftValue": "={{ $json['Post Goal'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "478eead6-0596-485f-9337-635dc433d247",
+              "leftValue": "={{ $json['Main Hook'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1de4defc-9c8c-4103-a8f9-6563e3ccc539",
+              "leftValue": "={{ $json['Core Message'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "18e426e5-e8b6-44de-909e-74fc1230842d",
+              "leftValue": "={{ $json['Key Features'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        -40
+      ],
+      "id": "e3a1f401-f789-45d4-af20-a976d6ba142b",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"facebook_post\": {\n    \"type\": \"string\",\n    \"description\": \"Facebook post text under 300 characters for QuoHR\"\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        552,
+        80
+      ],
+      "id": "dc0f3707-d45f-4727-8e45-193c197597bd",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        424,
+        80
+      ],
+      "id": "30d75ed6-1de4-48b0-9372-e47572d8b1e6",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Using the following inputs, generate banner text in standard marketing hierarchy:\n\nPost Goal: {{ $('Edit Fields2').item.json['Post Goal'] }}\nMain Hook:{{ $('Edit Fields2').item.json['Main Hook'] }}\nCore Message: {{ $('Edit Fields2').item.json['Core Message'] }}\nKey Features: {{ $('Edit Fields2').item.json['Key Features'] }}\nBenefit:{{ $('Edit Fields2').item.json['Benefit (optinal)'] }}\nText on Image: {{ $('Edit Fields2').item.json['Text on Image'] }}\n\nGenerate:\n- hook\n- lead_in\n- main_headline\n- subheading\n- body_copy\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a marketing copywriter for QuoHR.\nQuoHR provides HR management solutions that improve productivity and efficiency.\nYour task is to generate marketing banner text using standard text hierarchy.\nUse simple English.\nCreate short, clear lines for each text role.\nDo not add explanations.\nOutput only structured JSON.\n{\n  \"hook\": {\n    \"type\": \"string\"\n  },\n  \"lead_in\": {\n    \"type\": \"string\"\n  },\n  \"main_headline\": {\n    \"type\": \"string\"\n  },\n  \"subheading\": {\n    \"type\": \"string\"\n  },\n  \"body_copy\": {\n    \"type\": \"string\"\n  }\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        -144
+      ],
+      "id": "3c2bd8d1-9093-4061-bb73-1b4df454b3f7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"hook\": {\n      \"type\": \"string\",\n      \"description\": \"Attention-grabbing opening line\",\n      \"minLength\": 1\n    },\n    \"lead_in\": {\n      \"type\": \"string\",\n      \"description\": \"Short line leading to main headline\",\n      \"minLength\": 1\n    },\n    \"main_headline\": {\n      \"type\": \"string\",\n      \"description\": \"Primary bold message on the banner\",\n      \"minLength\": 1\n    },\n    \"subheading\": {\n      \"type\": \"string\",\n      \"description\": \"Secondary text supporting the main headline\",\n      \"minLength\": 1\n    },\n    \"body_copy\": {\n      \"type\": \"string\",\n      \"description\": \"Brief description or benefit statement\",\n      \"minLength\": 1\n    }\n  },\n  \"required\": [\"hook\", \"lead_in\", \"main_headline\", \"subheading\", \"body_copy\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        840,
+        80
+      ],
+      "id": "1c31b4be-7447-4692-9571-0f7cffb70d42",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2048,
+        -40
+      ],
+      "id": "d860a7ee-b1a0-47d8-829b-fa75065fc7b4",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2272,
+        -112
+      ],
+      "id": "b9bac5c3-10b5-413b-86d1-2dc4c8c38a78",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2496,
+        56
+      ],
+      "id": "8fcac341-cb69-4aa4-bafb-9772a7cb99b0",
+      "name": "Wait",
+      "webhookId": "2f6cb0f5-bbd2-40ba-9592-2774f65d7bc7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3de9ae14-a223-4181-ad2f-297898eb8a30",
+              "name": "data.resultJson",
+              "value": "={{ $('If').item.json.data.resultJson }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        288
+      ],
+      "id": "11edafa9-8d18-4d7b-b940-3e9abbde6dd7",
+      "name": "url"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the nested JSON string\nconst resultJson = JSON.parse($input.first().json.data.resultJson);\n\n// Get the first URL from resultUrls array\nconst imageUrl = resultJson.resultUrls[0];\n\n// Return it\nreturn [\n  {\n    json: {\n      url: imageUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        288
+      ],
+      "id": "35744396-37c4-474f-be2f-45ccd981cce1",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        288
+      ],
+      "id": "9495b67a-3584-4481-89c4-ccf8099b7aa8",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.prompt }}, Place the logo in the top-left corner, sized at 8% of the image width, using this exact image as the logo: https://drive.google.com/uc?export=download&id=187bs0MCi5cvQJaOnPYu84YUQh5uMvg7r\",\n    \"aspect_ratio\": \"5:4\",\n    \"resolution\": \"1K\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=187bs0MCi5cvQJaOnPYu84YUQh5uMvg7r\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1824,
+        -40
+      ],
+      "id": "6c5bcf91-a27c-469e-93ed-4c94c87c1176",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1128,
+        80
+      ],
+      "id": "80268f1d-7380-46dc-8c71-dacaddf1d30c",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "= {{ $('Edit Fields2').item.json['Main Hook'] }} Thumbnail",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('media folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        640,
+        288
+      ],
+      "id": "fcf37816-4897-443d-bc36-7dfedf6147b0",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Media",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -256,
+        288
+      ],
+      "id": "74c81778-8855-4ec6-b512-4694042e7528",
+      "name": "media folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "=QouHr {{ $('Edit Fields2').item.json[\"Main Hook\"] }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1gRyJ7CvawKzCaTLwJGBAbovWDVbniRtb",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -480,
+        288
+      ],
+      "id": "611897e1-5961-4a6e-9d38-5489d6c2002b",
+      "name": "Blog folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b5b651f-2dbb-4739-9bed-37f07a9c095d",
+              "name": "Facebook_Post",
+              "value": "={{ $('AI Agent3').item.json.output.facebook_post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        864,
+        288
+      ],
+      "id": "74fefe4d-b250-457e-a566-83366f900481",
+      "name": "data"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1312,
+        288
+      ],
+      "id": "011056eb-b584-43b0-934e-0974308a6ec5",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b342a66-57ef-4747-bf5d-23817c0413db",
+              "name": "data",
+              "value": "={{ $json.Facebook_Post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1088,
+        288
+      ],
+      "id": "4b259364-6451-4f31-9016-255e2dee125b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Edit Fields2').item.json['Main Hook'] }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Blog folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1536,
+        288
+      ],
+      "id": "dff3cc87-d1b6-4d75-8f2b-9d801e55a6df",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## GilgitApp Social Media Page Workflow\n**GilgitApp Social Media Page Workflow**",
+        "height": 1232,
+        "width": 5504
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1600,
+        -496
+      ],
+      "typeVersion": 1,
+      "id": "b4228250-386c-4b51-bf7d-db1ef1028193",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 91551605,
+          "mode": "list",
+          "cachedResultName": "QuoHR social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=91551605"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').item.json.ID }}",
+            "Status": "Generated"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Goal",
+              "displayName": "Post Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Hook",
+              "displayName": "Main Hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Core Message",
+              "displayName": "Core Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Features",
+              "displayName": "Key Features",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Benefit (optinal)",
+              "displayName": "Benefit (optinal)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1760,
+        288
+      ],
+      "id": "891315db-08ad-4f32-8ede-124c78c7bb82",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer h8gZHJ8ygG4HCtUP5ryS0fckmZ3wZ1MUfQO4pPxt408"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $('AI Agent3').first().json.output.facebook_post }}\\\", channelId: \\\"69afbc137be9f8b1713e2507\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $json.url }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2720,
+        -160
+      ],
+      "id": "d8bfaa8a-cdc4-4c97-b284-957b5442919e",
+      "name": "GilgitApp Integrations1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = JSON.parse($input.first().json.data.resultJson);\nreturn [{ url: data.resultUrls[0] }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2496,
+        -160
+      ],
+      "id": "58636644-9941-48d1-88db-6a234ce0f289",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a complete social media banner image-generation prompt for QuoHR using\nthe following copy input JSON:\n\nINPUT JSON:\n{{ $json.output | toJSON }}\n\nInstructions:\n1. Parse all fields from the input JSON: hook, lead_in, main_headline, subheading, body_copy\n2. Determine the banner type based on the dominant message intent\n3. Apply ALL 14 design rules from your system knowledge\n4. Choose the most appropriate hero visual (human lifestyle OR product visual)\n5. Write a detailed, complete image-generation prompt that an AI image tool can\n   use directly to produce a professional 1080×1080 social media post\n6. Do NOT describe the QuoHR logo — write \"QuoHR logo asset placement [position]\" only\n7. Return ONLY valid JSON in the output format specified — no markdown, no preamble\n\nThe image prompt must be production-ready, describing:\n- Exact canvas size and resolution\n- Background treatment (gradient direction, colors with hex values)\n- Hero image subject and positioning (left, right, center, full bleed)\n- Text layers and their positions (with font weight and approximate size in pt/px)\n- UI elements (CTA button shape, color, position)\n- Lighting and photo style for the hero image\n- Whitespace distribution\n- Any decorative elements (geometric shapes, grid lines, glassmorphism cards, etc.)\n\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a world-class Graphic Design AI Agent and Creative Director specializing in\nprofessional social media banner creation. Your role is to receive structured JSON\ncopy input and transform it into a pixel-perfect, highly detailed image-generation\nprompt for tools like Midjourney, DALL·E 3, Stable Diffusion, or Adobe Firefly.\n\n─────────────────────────────────────────────────────────────────────────────────\nBRAND IDENTITY — QuoHR (Memorize this completely)\n─────────────────────────────────────────────────────────────────────────────────\n  Brand Name        : QuoHR\n  Industry          : HR Software / SaaS / HRM Platform (Pakistan-based, Global reach)\n  Brand Personality : Professional · Trustworthy · Modern · Efficient · Empowering\n  Brand Voice       : Confident, clear, action-driven. Speaks to business owners,\n                      HR managers, and team leads who want to save time.\n  \n  Logo Rule         : NEVER describe the QuoHR logo visually. Instead, always write:\n                      \"QuoHR logo placed at [position], sourced from brand asset URL\"\n                      DO NOT generate or describe the bear mascot or logo art — it\n                      will be placed programmatically in post-production.\n\n  Brand Color Palette (strictly follow):\n    PRIMARY BLUE    : #1565C0  (deep royal blue — dominant, headlines, CTA buttons)\n    BRIGHT BLUE     : #1E88E5  (medium blue — backgrounds, gradients)\n    LIGHT BLUE      : #42A5F5  (sky blue — accents, highlights, hover states)\n    PALE BLUE BG    : #E3F2FD  (very light blue — light-theme backgrounds)\n    WHITE           : #FFFFFF  (text on dark, cards, clean space)\n    DARK NAVY       : #0D47A1  (deep sections, dramatic backgrounds)\n    ACCENT TEAL     : #29B6F6  (gradient endpoints, dynamic energy accents)\n    NEUTRAL GRAY    : #F5F5F5  (secondary backgrounds, light cards)\n    TEXT DARK       : #1A1A2E  (body text on light backgrounds)\n\n  Gradient Combinations (always use these):\n    Dark hero bg   : linear 135° from #0D47A1 → #1565C0 → #1976D2 → #2196F3\n    Light hero bg  : linear 160° from #E3F2FD → #BBDEFB → #90CAF9\n    CTA button     : solid #1565C0 or white with #1565C0 text\n    Accent strip   : #1976D2 → #29B6F6\n\n  Typography Rules:\n    HEADLINE FONT   : Montserrat ExtraBold or Black (weight 800–900)\n    SUBTEXT FONT    : Inter or Montserrat SemiBold (weight 500–600)\n    BODY FONT       : Inter Regular or Medium (weight 400–500)\n    RULE            : Max 2 font families per design. Headline always 2–3× larger\n                      than body. ALL CAPS only for short labels/badges.\n    Text hierarchy  : Hook/Pain Point → Main Headline → Subheading → Body Copy → CTA\n\n─────────────────────────────────────────────────────────────────────────────────\nBANNER DESIGN FRAMEWORK — Apply ALL 14 Rules to Every Prompt\n─────────────────────────────────────────────────────────────────────────────────\n\nRULE 1 — DEFINE GOAL\n  Identify the banner purpose from the input JSON:\n  - \"hook\" field = awareness/pain-point post\n  - \"lead_in\" field = educational/feature post\n  - \"main_headline\" = product-focus post\n  - If discount/offer context → promotional post\n  Always name the goal at the start of your prompt description.\n\nRULE 2 — TARGET AUDIENCE\n  QuoHR's audience:\n  - Primary: HR Managers, Business Owners, Operations Leads (25–50 yrs)\n  - Secondary: Startup founders, SME owners, Enterprise HR teams\n  - Region: Pakistan + South Asia + Global SaaS market\n  Design must feel professional, not playful. Authoritative, not casual.\n\nRULE 3 — CORRECT SIZE & RESOLUTION\n  Always do not specify canvas size,\nRULE 4 — CLEAR MAIN MESSAGE\n  Extract exactly ONE dominant headline from input JSON (\"main_headline\").\n  This must be the LARGEST text element in the design.\n  Maximum 6 words visible at a glance. Bold. High contrast. No decorative fonts.\n\nRULE 5 — STRONG HERO VISUAL / KEY IMAGE\n  Every banner MUST include a \"hero visual\" — a real-world human or product image\n  that instantly communicates the HR context. Choose one of these based on content:\n  \n  HUMAN LIFESTYLE IMAGES (use when tone is aspirational/empowerment):\n    - Professional man or woman in business casual, working on a modern laptop\n    - Team meeting in a bright modern office\n    - HR manager smiling, reviewing documents on a tablet\n    - Business leader in a clean office setting, confident posture\n    - Employee using a biometric fingerprint scanner at an office entrance\n  \n  PRODUCT / OBJECT IMAGES (use when tone is feature/technical):\n    - Sleek laptop screen showing a professional HR dashboard (charts, employee list)\n    - Biometric fingerprint attendance device on a desk\n    - Mobile phone showing an HR app interface\n    - Stack of messy paper files (before state) vs. clean laptop (after state)\n    - 3D floating icons: clock, gear, user profile, checkmark, upward arrow\n  \n  Image style rules:\n    - Photo-realistic, high-resolution (not illustration unless specified)\n    - Clean backgrounds (white, light gray, or the brand blue gradient)\n    - Professional color temperature (cool-toned, aligned with brand palette)\n    - No watermarks, no generic stock-photo filters\n    - Subject should look toward or interact with a product/device when possible\n\nRULE 6 — TYPOGRAPHY EXECUTION\n  In your prompt always specify:\n  - Font weight: \"bold Montserrat Black for headline\"\n  - Size ratio: \"headline is 3× larger than body text\"\n  - Color: \"white text on blue background\", \"deep blue #1565C0 on white/light bg\"\n  - Alignment: center-aligned for square posts, left-aligned for landscape\n  - Anti-aliasing: crisp, sharp text rendering\n\nRULE 7 — COLOR SCHEME\n  Use ONLY the QuoHR brand palette defined above. Never introduce:\n  - Purple, red, orange, yellow, green (unless used sparingly for data callouts)\n  - Generic gradients (pink-to-purple, rainbow, neon)\n  Always state the exact hex codes in your image prompt.\n\nRULE 8 — VISUAL HIERARCHY\n  Structure every banner in this reading order (top → bottom or left → right):\n    1. Logo placeholder area (top-left or top-center)\n    2. Hook / Pain-point text (if applicable)\n    3. Main Headline (largest, boldest, center or top-half)\n    4. Subheading or feature list (middle section)\n    5. Hero visual / Key Image (center or right half)\n    6. Body copy (small, supporting)\n    7. CTA Button (bottom or bottom-right, high contrast)\n    8. Contact/URL (smallest, footer area)\n\nRULE 9 — CALL TO ACTION (CTA)\n  Always include a CTA based on the post type:\n  - Awareness post     : \"Learn More\" / \"Discover QuoHR\"\n  - Feature post       : \"Try It Free\" / \"Get Started\"\n  - Promo/Discount post: \"Claim Offer\" / \"Get 50% Off\"\n  - Brand story post   : \"Explore QuoHR\" / \"Visit QuoHR.com\"\n  CTA must be a visually distinct button (rounded pill, white fill or brand blue fill).\n\nRULE 10 — LAYOUT & ALIGNMENT\n  Specify layout grid in every prompt:\n  - Square posts: use 2-column split OR centered single-column layout\n  - Landscape: left-text + right-image OR full-bleed background with overlay text\n  - Always mention: padding 40px minimum from edges, 8px baseline grid, z-index layers\n  - Elements must NOT touch edges of the canvas\n\nRULE 11 — CONTRAST & READABILITY\n  - White text on blue: minimum 7:1 contrast ratio (WCAG AAA)\n  - Dark text on light: #1A1A2E or #0D47A1 on #E3F2FD or #FFFFFF\n  - Never use gray text on blue background\n  - Text must remain readable at thumbnail size (150×150 px preview)\n  - Add subtle text shadow or semi-transparent overlay behind text on photo backgrounds\n\nRULE 12 — BRAND ELEMENTS\n  Always include in the prompt (do NOT describe the logo visually):\n  - \"Reserve top-left (or top-center) area 100×40px for QuoHR logo asset\"\n  - Brand color usage as specified\n  - Consistent rounded corners (16–24px radius on cards and buttons)\n  - Brand-consistent icon style: outline or 3D glassmorphism blue icons\n\nRULE 13 — WHITESPACE\n  Explicitly state in prompt:\n  - \"generous whitespace between all elements\"\n  - \"no element crowding — minimum 24px gap between any two UI items\"\n  - \"breathing room in text blocks — 1.6× line height for readability\"\n  - Maximum 5 text blocks per banner\n\nRULE 14 — CONSISTENCY\n  Every prompt must reference the QuoHR visual system:\n  - Same font families across banners\n  - Same color palette\n  - Same corner radius language (16–24px)\n  - Same icon style (blue 3D glassmorphism or flat line icons)\n  - Same photography style (professional, cool-toned, modern office)\n\n─────────────────────────────────────────────────────────────────────────────────\nOUTPUT FORMAT — What You Must Return\n─────────────────────────────────────────────────────────────────────────────────\n\nReturn a JSON object with the following structure:\n\n{\n  \"banner_type\": \"string (e.g. awareness | feature | promo | brand)\",\n  \"image_generation_prompt\": \"string (the full detailed prompt for image AI)\",\n  \"layout_description\": \"string (brief layout explanation for designer reference)\",\n  \"typography_spec\": {\n    \"headline_text\": \"string\",\n    \"headline_font\": \"string\",\n    \"subheading_text\": \"string\",\n    \"body_text\": \"string\",\n    \"cta_text\": \"string\"\n  },\n  \"color_palette_used\": [\"array of hex codes used in this specific design\"],\n  \"hero_visual_description\": \"string (what the key visual/photo should show)\",\n  \"logo_placement\": \"string (position instruction only — no logo description)\",\n  \"design_notes\": \"string (any additional creative direction)\"\n}\n\n─────────────────────────────────────────────────────────────────────────────────\nCRITICAL RULES\n─────────────────────────────────────────────────────────────────────────────────\n✅ DO: Use exact hex codes from the QuoHR palette\n✅ DO: Specify \"reserve area for QuoHR logo\" — never describe the logo\n✅ DO: Include a specific, realistic hero image description\n✅ DO: Output clean JSON that can be parsed programmatically\n✅ DO: Make the image_generation_prompt self-contained and complete\n✅ DO: Follow all 14 design rules without exception\n❌ DO NOT: Invent colors outside the brand palette\n❌ DO NOT: Describe the QuoHR logo bear mascot or any logo artwork\n❌ DO NOT: Use generic placeholders like \"some image here\"\n❌ DO NOT: Create overcrowded designs (violates Rule 13)\n❌ DO NOT: Output markdown — return only valid JSON\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        -144
+      ],
+      "id": "1e465526-77e9-4997-aa31-d8e0038fdc1b",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"banner_type\": \"feature\",\n  \"image_generation_prompt\": \"Goal: Feature post to showcase QuoHR HR software efficiency. Target audience: HR Managers, Business Owners, Operations Leads aged 25–50.,square social media post. Background: linear gradient 160° from #E3F2FD → #BBDEFB → #90CAF9. Hero visual: professional HR manager woman in business casual, smiling, reviewing employee dashboard on laptop, positioned center-right, full bleed but leaving 40px padding. Text layers: hook at top-left in Inter SemiBold 24pt, main headline center-top in Montserrat ExtraBold 60pt #1565C0, subheading below headline in Inter SemiBold 28pt #1A1A2E, body copy small below subheading in Inter Regular 20pt #1A1A2E. CTA: rounded pill button bottom-right, solid #1565C0, white text 'Try It Free', 16px padding. Lighting: cool-toned professional office lighting, natural soft shadows. Whitespace: generous spacing between text and hero image, minimum 24px gap, 1.6× line height. Decorative elements: subtle 3D glassmorphism icon set (clock, gear, checkmark) floating top-left, light accent strip #1976D2 → #29B6F6 across bottom third. Ensure crisp, anti-aliased text rendering, readable at thumbnail size. QuoHR logo asset placement top-left, reserve 100×40px. Maintain brand consistency: fonts, color palette, corner radius 16–24px, professional photo style.\",\n  \"layout_description\": \"Square post layout with hero image on right, headline and subheading on top-left, body copy under subheading, CTA button bottom-right, logo top-left, decorative accent strip bottom third. Text left-aligned, hero image centered with breathing room, generous whitespace around all elements.\",\n  \"typography_spec\": {\n    \"headline_text\": \"Transform HR Management\",\n    \"headline_font\": \"Montserrat ExtraBold\",\n    \"subheading_text\": \"Simplify payroll, attendance, and employee records effortlessly\",\n    \"body_text\": \"QuoHR provides a seamless HR experience with dashboard, reporting, and automation features to save time and increase efficiency.\",\n    \"cta_text\": \"Try It Free\"\n  },\n  \"color_palette_used\": [\"#1565C0\", \"#1E88E5\", \"#42A5F5\", \"#E3F2FD\", \"#0D47A1\", \"#29B6F6\"],\n  \"hero_visual_description\": \"Professional HR manager woman in business casual working on a modern laptop, reviewing HR dashboard, smiling confidently, in a bright modern office, center-right, photo-realistic, cool lighting, interacting with device naturally.\",\n  \"logo_placement\": \"Top-left, reserve 100x40px for QuoHR logo asset\",\n  \"design_notes\": \"Ensure 16–24px corner radius on CTA and glassmorphism icons. Maintain minimum 40px padding from canvas edges. Keep text hierarchy clear: headline largest, subheading medium, body small. Maximum 5 text blocks, generous whitespace between elements. Accent strip adds visual separation without overpowering hero image.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1256,
+        80
+      ],
+      "id": "d858fc07-5671-407c-8e5f-3fb40328e043",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI assistant. Take the following input JSON \ndata json : {{ $json.toJsonString() }}\narray containing banner details. Parse all fields inside \"output\" including banner_type, canvas_size, image_generation_prompt, layout_description, typography_spec, color_palette_used, hero_visual_description, logo_placement, and design_notes. Your task is to **generate a single production-ready AI image-generation prompt** that consolidates all this information into **one smooth, complete prompt** ready for Midjourney, DALL·E 3, or Firefly. \n\nOutput only **valid JSON** using the schema provided below. Include all key visual, text layers, colors, CTA, hero image description, typography, layout, spacing, lighting, and brand details. Do NOT describe the QuoHR logo visually — write \"QuoHR logo asset placement [position]\". Return a self-contained, single-paragraph prompt in the \"image_generation_prompt\" field.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a world-class Graphic Design AI Agent and Creative Director specializing in professional social media banner creation for QuoHR. Your role is to receive structured JSON and transform it into a **pixel-perfect, highly detailed single AI image-generation prompt**. Follow these rules:\n\n1. Follow **all 14 QuoHR design rules**: goal, target audience, canvas/resolution, main message, hero visual, typography, color scheme, visual hierarchy, CTA, layout, contrast/readability, brand elements, whitespace, consistency.\n2. Use only **QuoHR brand colors** and typography (Montserrat, Inter). Headline always largest, CTA visible, whitespace generous.\n3. Hero visual must be **human lifestyle or product image** as per banner_type.\n4. Include **canvas size, background, hero visual position, text layers, font weight & size, CTA style & position, lighting, decorative elements, spacing**, all in the prompt.\n5. Do not describe QuoHR logo — always use \"QuoHR logo asset placement [position]\".\n6. Maintain **professional, trustworthy, modern HR SaaS aesthetic**.\n7. Return output strictly in the following **JSON format**.\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph.\n8.Take the input JSON containing banner details and output **only one JSON object** with a single key \"prompt\". Merge all relevant details (banner type, canvas size, colors, typography, hero image, layout, CTA, whitespace, lighting, brand rules) into a **single, self-contained AI image-generation prompt**. Do not add extra fields, descriptions, or markdown. The output must be strictly in this format: {\"prompt\": \"<final AI-ready prompt>\"}. Ensure the prompt is a smooth, continuous paragraph suitable nano banana 2"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        -144
+      ],
+      "id": "77bcbe49-3e5b-48f1-979e-0e895acf988c",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"title\": \"QuoHR Banner Single Prompt\",\n  \"description\": \"JSON schema for a single production-ready AI image-generation prompt\",\n  \"type\": \"object\",\n  \"required\": [\"prompt\"],\n  \"properties\": {\n    \"prompt\": {\n      \"type\": \"string\",\n      \"minLength\": 50,\n      \"description\": \"Full, self-contained AI image-generation prompt for a QuoHR banner\"\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1544,
+        80
+      ],
+      "id": "9d6632dd-c903-48af-baa4-8fa12f309897",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit?pli=1&gid=1482449830#gid=1482449830",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1482449830,
+          "mode": "list",
+          "cachedResultName": "QuoHR social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit#gid=1482449830"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').first().json.ID }}",
+            "Status": "publish",
+            "Link": "https://publish.buffer.com/channels/69afbc137be9f8b1713e2507?tab=drafts"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Goal",
+              "displayName": "Post Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Hook",
+              "displayName": "Main Hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Core Message",
+              "displayName": "Core Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Features",
+              "displayName": "Key Features",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Benefit (optinal)",
+              "displayName": "Benefit (optinal)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2944,
+        -160
+      ],
+      "id": "e92225ee-2b3e-490d-8ae8-b45f2cc024fd",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "l0WyYP8jFUXeJ1GY",
+          "name": "Google Sheets account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "GilgitApp Integrations1": [
+      {
+        "json": {
+          "data": {
+            "createPost": {
+              "post": {
+                "id": "69b00132d5991421c710a169",
+                "text": "HR tasks slowing you down? QuoHR makes HR management simple and fast. Our comprehensive solutions streamline onboarding, ensure compliance, and simplify team management. Save valuable time, boost productivity, and grow your business with efficient HR processes. Transform how you manage HR and drive organizational efficiency today. #HRSoftware #HRManagement #ProductivityTools #BusinessEfficiency #HRCompliance #TeamManagement #Onboarding #HRTech #BusinessGrowth #TimeManagement",
+                "status": "draft",
+                "assets": [
+                  {
+                    "source": "https://tempfile.aiquickdraw.com/na2/ff52230d8d62c8dc04578610c684c5d31570398.png",
+                    "thumbnail": "https://tempfile.aiquickdraw.com/na2/ff52230d8d62c8dc04578610c684c5d31570398.png"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "media folder": {
+      "main": [
+        [
+          {
+            "node": "url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog folder": {
+      "main": [
+        [
+          {
+            "node": "media folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GilgitApp Integrations1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "71dc61e0-9bf2-4b21-8878-e229445756c9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f69eeec8ea9daa545fcc324365536c2040645353f7993a4239619466c43daea"
+  },
+  "id": "izGQOb6cuiiXn4tK",
+  "tags": []
+}

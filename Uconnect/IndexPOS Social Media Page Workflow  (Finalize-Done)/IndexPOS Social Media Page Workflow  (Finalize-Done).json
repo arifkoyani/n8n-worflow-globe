@@ -1,0 +1,3998 @@
+{
+  "name": "IndexPOS Social Media Page Workflow  (Finalize-Done)",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a Facebook post text for Index POS using the following input JSON:\n\nPost Goal: {{ $json['Post Goal'] }}\nMain Hook: {{ $json['Main Hook'] }}\nCore Message: {{ $json['Core Message'] }}\nKey Features: {{ $json['Key Features'] }}\nBenefit (optional): {{ $json['Benefit (optinal)'] }}\nText on Image: {{ $json['Text on Image'] }}\nLanguage:{{ $json.language }}\n\nOutput Format (JSON):\n{\n  \"facebook_post\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a social media AI content generator for GilgitApp Shops / Index POS.\n\nYour task is to create **Facebook post text** in **English or Urdu** based on the `language` field from the input JSON. Follow these rules:\n\n1. Use only the inputs provided in JSON:\n   - Post Goal\n   - Main Hook\n   - Core Message\n   - Key Features\n   - Benefit (optional)\n   - Text on Image\n\n2. Generate post text based on the `language` field:\n   - If `language` is \"english\", output text only in English.\n   - If `language` is \"urdu\", output text only in Urdu.\n\n3. Keep posts:\n   - Concise, persuasive, and engaging\n   - Under 900 characters\n   - Using emojis appropriately\n   - Highlighting ease-of-use, benefits, and key features\n\n4. Include a short **Call-to-Action (CTA)** encouraging users to upgrade, try, or explore Index POS.\n\n5. Use “Text on Image” as a reference to emphasize main messaging.\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph.\n\n6. Output only **valid JSON** in this format:\n\n```json\n{\n  \"facebook_post\": \"...\"\n}\n\n7. add last 5 High SEO Hash tags"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        48
+      ],
+      "id": "e3146433-8934-4ce0-9df9-5e50ffe18e00",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1233072-d5ee-473d-905f-4b410d3b26d3",
+              "name": "Post Goal",
+              "value": "={{ $json['Post Goal'] }}",
+              "type": "string"
+            },
+            {
+              "id": "1a00ee7c-e931-401e-8a65-21f384a8bf47",
+              "name": "Main Hook",
+              "value": "={{ $json['Main Hook'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f1b77bc-1a08-4ae6-a375-f5bace9b8e6c",
+              "name": "Core Message",
+              "value": "={{ $json['Core Message'] }}",
+              "type": "string"
+            },
+            {
+              "id": "5fd09717-56ef-4b33-8d44-c4bde146dd80",
+              "name": "Key Features",
+              "value": "={{ $json['Key Features'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d04bd475-fe38-4359-ab0b-98a76ec36e17",
+              "name": "Benefit (optinal)",
+              "value": "={{ $json['Benefit (optinal)'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2e873212-a94f-4c13-a335-fc712f6d456f",
+              "name": "Text on Image",
+              "value": "={{ $json['Text on Image'] }}",
+              "type": "string"
+            },
+            {
+              "id": "51fff1a0-6fe3-44cb-9e03-85381f8bd70d",
+              "name": "language",
+              "value": "={{ $json['Language Toggle'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        152
+      ],
+      "id": "352bf8e6-455a-4852-977c-beb09c2163f5",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4577c3c4-069c-484b-92d6-b07e69f3110d",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        584
+      ],
+      "id": "e37bfa11-106d-4007-b300-1fea8f499909",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9d4b9bc5-a1d6-4ebf-a169-9d5bec21f6f2",
+              "leftValue": "={{ $json['Post Goal'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "478eead6-0596-485f-9337-635dc433d247",
+              "leftValue": "={{ $json['Main Hook'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1de4defc-9c8c-4103-a8f9-6563e3ccc539",
+              "leftValue": "={{ $json['Core Message'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "18e426e5-e8b6-44de-909e-74fc1230842d",
+              "leftValue": "={{ $json['Key Features'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        584
+      ],
+      "id": "8de9e2f5-20cc-4f13-b0a9-62e4ab6338ed",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"facebook_post\": {\n    \"type\": \"string\",\n    \"description\": \"Facebook post text in Urdu, under 900 characters, optimized for engagement and conversions\"\n  },\n  \"facebook_post\": {\n    \"type\": \"string\",\n    \"description\": \"Facebook post text in English, under 900 characters, optimized for engagement and conversions\"\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1112,
+        272
+      ],
+      "id": "dbba8527-7e80-47c3-a2e2-ae1206e94cec",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        984,
+        272
+      ],
+      "id": "4bc30bf6-96e9-4f37-b311-335281438f1b",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Using the following inputs, generate banner text in standard marketing hierarchy:\n\nPost Goal: {{ $('Edit Fields2').item.json['Post Goal'] }}\nMain Hook:{{ $('Edit Fields2').item.json['Main Hook'] }}\nCore Message: {{ $('Edit Fields2').item.json['Core Message'] }}\nKey Features: {{ $('Edit Fields2').item.json['Key Features'] }}\nBenefit:{{ $('Edit Fields2').item.json['Benefit (optinal)'] }}\nText on Image: {{ $('Edit Fields2').item.json['Text on Image'] }}\n\nGenerate:\n- hook\n- lead_in\n- main_headline\n- subheading\n- body_copy\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a marketing copywriter for Index POS.\n\nIndex POS is a smart retail and business management platform that helps shop owners track sales, manage inventory, and control their business easily.\n\nYour task is to generate marketing banner text for Index POS using a standard text hierarchy.\n\nRules:\n- Use simple English\n- Write short, clear lines\n- Focus on retail benefits (speed, control, tracking, simplicity)\n- Do not add explanations\n- Do not add extra text\n- Output only structured JSON\n\nOutput format:\n{\n  \"hook\": {\n    \"type\": \"string\"\n  },\n  \"lead_in\": {\n    \"type\": \"string\"\n  },\n  \"main_headline\": {\n    \"type\": \"string\"\n  },\n  \"subheading\": {\n    \"type\": \"string\"\n  },\n  \"body_copy\": {\n    \"type\": \"string\"\n  }\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        48
+      ],
+      "id": "9f2a02a8-4f21-4951-a14f-6a7856f5ba70",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"hook\": {\n      \"type\": \"string\",\n      \"description\": \"Short, attention-grabbing line to draw the reader in.\"\n    },\n    \"lead_in\": {\n      \"type\": \"string\",\n      \"description\": \"A brief supporting line that connects the hook to the main headline.\"\n    },\n    \"main_headline\": {\n      \"type\": \"string\",\n      \"description\": \"Primary message of the banner, clear and concise.\"\n    },\n    \"subheading\": {\n      \"type\": \"string\",\n      \"description\": \"Secondary text providing context or key feature.\"\n    },\n    \"body_copy\": {\n      \"type\": \"string\",\n      \"description\": \"Optional longer text explaining benefits or call-to-action.\"\n    }\n  },\n  \"required\": [\"hook\", \"lead_in\", \"main_headline\", \"subheading\", \"body_copy\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1400,
+        272
+      ],
+      "id": "8e294dd7-fa1e-4682-8a7b-30aa0b6ba4f6",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2256,
+        152
+      ],
+      "id": "1794d565-30e4-4cb3-9046-f8270e2b8a1c",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2480,
+        80
+      ],
+      "id": "8d03961b-5eda-4f3a-9d17-42be938a077e",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2704,
+        248
+      ],
+      "id": "dfafb4c2-50a7-47ce-9710-40b1a90f2c04",
+      "name": "Wait",
+      "webhookId": "0006e964-236e-4edd-948b-82821fe88577"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3de9ae14-a223-4181-ad2f-297898eb8a30",
+              "name": "data.resultJson",
+              "value": "={{ $('If').item.json.data.resultJson }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        -192
+      ],
+      "id": "af2a6ac4-4dfd-4d2d-90b7-a8d2bfceb289",
+      "name": "url"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the nested JSON string\nconst resultJson = JSON.parse($input.first().json.data.resultJson);\n\n// Get the first URL from resultUrls array\nconst imageUrl = resultJson.resultUrls[0];\n\n// Return it\nreturn [\n  {\n    json: {\n      url: imageUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        -192
+      ],
+      "id": "70b99cbc-f2b3-410a-8b0a-2a2fdc09bce0",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        -192
+      ],
+      "id": "a51244ed-0f38-4761-a550-99c2f8552db6",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.prompt }}, Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo: https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\",\n    \"aspect_ratio\": \"{{ $('Google Sheets Trigger1').item.json['aspet ratio'] }}\",\n    \"resolution\": \"{{ $('Google Sheets Trigger1').item.json['Resolution image'] }}\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2032,
+        152
+      ],
+      "id": "f0c3c4ea-1fcc-4c26-bcea-4a3efb0dd8f4",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate the full AI image prompt for the Index POS marketing banner using this JSON:\n\n{{$json.toJsonString()}}\n\nExample input JSON:\n{\n  \"output\": {\n    \"hook\": \"Track Every Sale with Ease!\",\n    \"lead_in\": \"Smart Retail Management for Pakistani SMEs\",\n    \"main_headline\": \"Advanced Sales Management Tools\",\n    \"subheading\": \"Monitor performance and make smarter decisions — all in one place\",\n    \"body_copy\": \"Upgrade your business today with Index POS. Get real-time monitoring and simple, fast tracking to control your retail operations. Make smarter decisions with our all-in-one platform.\"\n  },\n  \"ai_image_config\": {\n    \"logo\": \"https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\",\n    \"background\": \"modern retail shop, bright and clean, showing POS system\",\n    \"text_overlay\": \"include all banner text clearly and readable\"\n  }\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert AI that converts structured banner data into ONE ultra-detailed AI image generation prompt for **Index POS**, strictly following the complete visual system below.\n\nYou will read user input JSON containing:\n- output: hook, lead_in, main_headline, subheading, body_copy\n- ai_image_config: logo, background, text_overlay\n\nYour task:\n- Generate ONE professional, highly descriptive AI image prompt for a social media banner.\n- Keep brand identity, layout, colors, fonts, spacing EXACTLY the same every time.\n- Only background scene and human character must change each time.\n- All text content must come ONLY from input JSON.\n\nIMAGE STRUCTURE (MANDATORY):\n- Vertical stack sections:\n  1) Logo zone (top-center)\n  2) Main headline\n  3) Subheading\n  4) Feature checklist (2 columns)\n  5) Product mockup + human model\n  6) CTA banner (bottom full-width)\n\nCOLORS (STRICT):\n- Background: blurred retail environment with soft white frosted overlay\n- Brand yellow: #FFD700 (CTA + checkmarks)\n- Text black: #111111 / #1A1A1A\n- Subtitle gray: #333333\n\nTYPOGRAPHY:\n- Brand text: Poppins / Montserrat (Bold & Medium)\n- Urdu text: Noto Nastaliq Urdu or Jameel Noori Nastaleeq\n- Proper RTL rendering for Urdu\n- Clear hierarchy, readable spacing, no decorative fonts\n\nLOGO RULES:\n-Use the uploaded logo image strictly as a visual reference and inspiration, preserving its exact colors, shape, proportions, and brand identity, without redesigning or altering the logo in any way\n- Place top-center\n- Logo icon + “IndexPOS” text side-by-side\n\nFEATURE LIST:\n- 2-column grid\n- Yellow ✔ icons\n- Clean business wording from JSON or POS context\n\nPRODUCT & HUMAN:\n- Modern POS dashboard inside widescreen monitor\n- Human must be South Asian, professional, confident\n- Pose, clothes, gender, age MUST vary each prompt\n- Human placed bottom-right as cut-out (no background)\n-“Display a modern POS dashboard on a sleek widescreen monitor showing sales charts and analytics. Place a cut-out Pakistani South Asian female on the bottom-right, wearing a traditional shalwar kameez with a formal jacket, professional and confident expression, natural pose (standing or slight angle), clean studio lighting, no background, sharp edges, realistic proportions\n\nCTA STRIP:\n- Full-width yellow bar at bottom\n- Black bold text\n- Strong visual anchor\n\nSTYLE & MOOD:\n- Modern, clean, local Pakistani market feel\n- Professional, trustworthy, high-contrast, social-media ready\n- No borders, no clutter, strong spacing\n\nOUTPUT RULE:\n- Return ONLY one JSON:\n{\n  \"prompt\": \"FULL detailed AI image generation prompt\"\n}\n- No explanations, no extra text.\n\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1680,
+        48
+      ],
+      "id": "e899e569-04d0-43b0-97ff-e813605d5745",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1688,
+        272
+      ],
+      "id": "43cc0997-42d7-470d-95ee-ea73172de01b",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Full, highly detailed AI image generation prompt for the Index POS banner, including text, logo, background, composition, style, and text hierarchy.\"\n    }\n  },\n  \"required\": [\"prompt\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1816,
+        272
+      ],
+      "id": "a511de47-1983-461f-8a08-805c56f282d5",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "name": "= {{ $('Edit Fields2').item.json['Main Hook'] }} Thumbnail",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('media folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        624,
+        -192
+      ],
+      "id": "c75df615-213f-4659-a843-41533ad04429",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Media",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -272,
+        -192
+      ],
+      "id": "266f1794-3e95-49ee-b723-27cfc546c36f",
+      "name": "media folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "=Index POS {{ $('Edit Fields2').item.json[\"Main Hook\"] }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1gRyJ7CvawKzCaTLwJGBAbovWDVbniRtb",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -496,
+        -192
+      ],
+      "id": "8c98850a-513b-468f-b903-5c49a49f031e",
+      "name": "Blog folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b5b651f-2dbb-4739-9bed-37f07a9c095d",
+              "name": "Facebook_Post",
+              "value": "={{ $('AI Agent3').item.json.output.facebook_post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        -192
+      ],
+      "id": "7757c188-2407-4c0f-96d6-03ca7fb20d9f",
+      "name": "data"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1296,
+        -192
+      ],
+      "id": "ea7c3534-daf8-45ff-8405-e8a9c86a210b",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Edit Fields2').item.json['Main Hook'] }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Blog folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1520,
+        -192
+      ],
+      "id": "4eb6bb67-fe98-47dc-90c0-01653d68daf7",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## IndexPOS Social Media Page Workflow\n**IndexPOS Social Media Page Workflow**",
+        "height": 2608,
+        "width": 4912
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1152,
+        -544
+      ],
+      "typeVersion": 1,
+      "id": "fc14b208-05ab-4572-85d7-5d226e7a1e97",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 872545133,
+          "mode": "list",
+          "cachedResultName": "IndexPos social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=872545133"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').item.json.ID }}",
+            "Status": "Generated",
+            "Folder Link": "=https://drive.google.com/drive/folders/{{ $('Blog folder').item.json.id }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Goal",
+              "displayName": "Post Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Hook",
+              "displayName": "Main Hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Core Message",
+              "displayName": "Core Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Features",
+              "displayName": "Key Features",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Benefit (optinal)",
+              "displayName": "Benefit (optinal)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Resolution image",
+              "displayName": "Resolution image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "aspet ratio",
+              "displayName": "aspet ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Language Toggle",
+              "displayName": "Language Toggle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder Link",
+              "displayName": "Folder Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1744,
+        -192
+      ],
+      "id": "285cb96b-a812-450d-98f7-dba1d399aa25",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b342a66-57ef-4747-bf5d-23817c0413db",
+              "name": "data",
+              "value": "={{ $json.Facebook_Post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        -192
+      ],
+      "id": "fd0a037a-7911-4c8f-b75b-1c7fda6c5d51",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Language Toggle'] }}",
+                    "rightValue": "English",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b398948d-ca64-43d7-8481-e02eef3835c7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "English"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "87b76a67-5593-4082-b9f7-1c3cca550d0c",
+                    "leftValue": "={{ $json['Language Toggle'] }}",
+                    "rightValue": "Urdu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Urdu"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        400,
+        368
+      ],
+      "id": "61cfb227-e3b4-4a2c-b3c8-1f15b53a0306",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a Facebook post text for Index POS using the following input JSON:\n\nPost Goal: {{ $json['Post Goal'] }}\nMain Hook: {{ $json['Main Hook'] }}\nCore Message: {{ $json['Core Message'] }}\nKey Features: {{ $json['Key Features'] }}\nBenefit (optional): {{ $json['Benefit (optinal)'] }}\nText on Image: {{ $json['Text on Image'] }}\nLanguage:{{ $json.language }}\n\nOutput Format (JSON):\n{\n  \"facebook_post\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a social media AI content generator for GilgitApp Shops / Index POS.\n\nYour task is to create **Facebook post text** in **English or Urdu** based on the `language` field from the input JSON. Follow these rules:\n\n1. Use only the inputs provided in JSON:\n   - Post Goal\n   - Main Hook\n   - Core Message\n   - Key Features\n   - Benefit (optional)\n   - Text on Image\n\n2. Generate post text based on the `language` field:\n   - If `language` is \"english\", output text only in English.\n   - If `language` is \"urdu\", output text only in Urdu.\n\n3. Keep posts:\n   - Concise, persuasive, and engaging\n   - Under 900 characters\n   - Using emojis appropriately\n   - Highlighting ease-of-use, benefits, and key features\n\n4. Include a short **Call-to-Action (CTA)** encouraging users to upgrade, try, or explore Index POS.\n\n5. Use “Text on Image” as a reference to emphasize main messaging.\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph.\n\n6. Output only **valid JSON** in this format:\n\n```json\n{\n  \"facebook_post\": \"...\"\n}\n\n7. add last 5 High SEO Hash tags"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        480
+      ],
+      "id": "266de521-b6f6-4800-bce4-c9ccd7234e9e",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1233072-d5ee-473d-905f-4b410d3b26d3",
+              "name": "Post Goal",
+              "value": "={{ $json['Post Goal'] }}",
+              "type": "string"
+            },
+            {
+              "id": "1a00ee7c-e931-401e-8a65-21f384a8bf47",
+              "name": "Main Hook",
+              "value": "={{ $json['Main Hook'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f1b77bc-1a08-4ae6-a375-f5bace9b8e6c",
+              "name": "Core Message",
+              "value": "={{ $json['Core Message'] }}",
+              "type": "string"
+            },
+            {
+              "id": "5fd09717-56ef-4b33-8d44-c4bde146dd80",
+              "name": "Key Features",
+              "value": "={{ $json['Key Features'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d04bd475-fe38-4359-ab0b-98a76ec36e17",
+              "name": "Benefit (optinal)",
+              "value": "={{ $json['Benefit (optinal)'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2e873212-a94f-4c13-a335-fc712f6d456f",
+              "name": "Text on Image",
+              "value": "={{ $json['Text on Image'] }}",
+              "type": "string"
+            },
+            {
+              "id": "51fff1a0-6fe3-44cb-9e03-85381f8bd70d",
+              "name": "language",
+              "value": "={{ $json['Language Toggle'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        584
+      ],
+      "id": "f32f5a80-749d-405d-a494-38a4fb2a206e",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"facebook_post\": {\n    \"type\": \"string\",\n    \"description\": \"Facebook post text in Urdu, under 900 characters, optimized for engagement and conversions\"\n  },\n  \"facebook_post\": {\n    \"type\": \"string\",\n    \"description\": \"Facebook post text in English, under 900 characters, optimized for engagement and conversions\"\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1112,
+        704
+      ],
+      "id": "da646119-07fe-4cd3-a895-bfb823d2a160",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        984,
+        704
+      ],
+      "id": "66e03ee7-f44f-43bf-8659-652917e7c9a8",
+      "name": "DeepSeek Chat Model2",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=درج ذیل ان پٹس استعمال کرتے ہوئے Index POS کے لیے مارکیٹنگ بینر کا متن معیاری مارکیٹنگ ہائرارکی میں تیار کریں:\n\nPost Goal: {{ $('Edit Fields3').item.json['Post Goal'] }}\nMain Hook: {{ $('Edit Fields3').item.json['Main Hook'] }}\nCore Message: {{ $('Edit Fields3').item.json['Core Message'] }}\nKey Features: {{ $('Edit Fields3').item.json['Key Features'] }}\nBenefit: {{ $('Edit Fields3').item.json['Benefit (optinal)'] }}\nText on Image: {{ $('Edit Fields3').item.json['Text on Image'] }}\n\nGenerate کریں:\n\nhook\n\nlead_in\n\nmain_headline\n\nsubheading\n\nbody_copy\n\nتمام آؤٹ پٹ صرف اردو زبان میں ہو۔",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=آپ Index POS کے لیے ایک ماہر مارکیٹنگ کاپی رائٹر ہیں۔\n\nIndex POS ایک اسمارٹ ریٹیل اور بزنس مینجمنٹ سافٹ ویئر ہے جو دکانداروں کو سیلز ٹریک کرنے، اسٹاک مینج کرنے اور بزنس کنٹرول کرنے میں مدد دیتا ہے۔\n\nآپ کا کام:\n\nدیے گئے ان پٹس کی بنیاد پر مارکیٹنگ بینر کا متن تیار کرنا\n\nمعیاری مارکیٹنگ ہائرارکی فالو کرنا\n\nقواعد:\n\nسادہ اور آسان اردو استعمال کریں\n\nجملے مختصر اور واضح ہوں\n\nفوکس: رفتار، کنٹرول، ٹریکنگ، آسانی\n\nکوئی وضاحت یا اضافی متن شامل نہ کریں\n\nآؤٹ پٹ صرف Structured JSON میں دیں\n\nصرف اردو زبان استعمال کریں"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        584
+      ],
+      "id": "69366dca-8b25-4cdf-b427-3c67b1397eb3",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"hook\": {\n      \"type\": \"string\",\n      \"description\": \"توجہ حاصل کرنے والا مختصر جملہ\"\n    },\n    \"lead_in\": {\n      \"type\": \"string\",\n      \"description\": \"ہُک اور ہیڈلائن کو جوڑنے والا جملہ\"\n    },\n    \"main_headline\": {\n      \"type\": \"string\",\n      \"description\": \"بینر کا مرکزی اور واضح پیغام\"\n    },\n    \"subheading\": {\n      \"type\": \"string\",\n      \"description\": \"اہم فیچر یا وضاحت\"\n    },\n    \"body_copy\": {\n      \"type\": \"string\",\n      \"description\": \"فوائد یا کال ٹو ایکشن پر مبنی مختصر متن\"\n    }\n  },\n  \"required\": [\"hook\", \"lead_in\", \"main_headline\", \"subheading\", \"body_copy\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1400,
+        808
+      ],
+      "id": "e104a27d-a305-4a01-b905-67ff1bcca0e6",
+      "name": "Structured Output Parser4"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2256,
+        584
+      ],
+      "id": "3986f7bb-4cb8-4c28-b643-3283cc4483ef",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2480,
+        512
+      ],
+      "id": "12725789-0d87-434b-b8e3-aeec2c248a3b",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2704,
+        680
+      ],
+      "id": "27a68010-6a11-47c0-b1dd-60def5700136",
+      "name": "Wait1",
+      "webhookId": "0006e964-236e-4edd-948b-82821fe88577"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3de9ae14-a223-4181-ad2f-297898eb8a30",
+              "name": "data.resultJson",
+              "value": "={{ $('If1').item.json.data.resultJson }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        1568
+      ],
+      "id": "da00315d-1054-4831-90db-09e3c25a72cc",
+      "name": "url1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the nested JSON string\nconst resultJson = JSON.parse($input.first().json.data.resultJson);\n\n// Get the first URL from resultUrls array\nconst imageUrl = resultJson.resultUrls[0];\n\n// Return it\nreturn [\n  {\n    json: {\n      url: imageUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        1568
+      ],
+      "id": "54d4dd2a-70b5-49de-9f3f-8f039409a061",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        1568
+      ],
+      "id": "7d92be1f-15f5-4e9f-9640-10143d87490e",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.prompt }}, Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo: https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\",\n    \"aspect_ratio\": \"{{ $('Google Sheets Trigger1').item.json['aspet ratio'] }}\",\n    \"resolution\": \"{{ $('Google Sheets Trigger1').item.json['Resolution image'] }}\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2032,
+        584
+      ],
+      "id": "024ec3ba-ce0e-412b-892c-be80573cc3e6",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate the full AI image prompt in Urdu for the Index POS marketing banner using this JSON:\n\ndata json : {{$json.toJsonString()}}\n\nExample input JSON:\n\n{\n  \"output\": {\n    \"hook\": \"ہر فروخت کو آسانی سے ٹریک کریں!\",\n    \"lead_in\": \"پاکستانی SMEs کے لیے سمارٹ ریٹیل مینجمنٹ\",\n    \"main_headline\": \"جدید سیلز مینجمنٹ ٹولز\",\n    \"subheading\": \"کارکردگی مانیٹر کریں اور ایک جگہ پر بہتر فیصلے کریں\",\n    \"body_copy\": \"آج ہی اپنے کاروبار کو Index POS کے ساتھ اپ گریڈ کریں۔ حقیقی وقت میں مانیٹرنگ حاصل کریں اور اپنی ریٹیل آپریشنز کو آسان، تیز اور مؤثر طریقے سے کنٹرول کریں۔ ہمارے آل-ان-ون پلیٹ فارم کے ساتھ بہتر فیصلے کریں۔\"\n  },\n  \"ai_image_config\": {\n    \"logo\": \"https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\",\n    \"background\": \"جدید ریٹیل شاپ، روشن اور صاف، POS سسٹم دکھاتے ہوئے\",\n    \"text_overlay\": \"تمام بینر ٹیکسٹ واضح اور پڑھنے کے قابل شامل کریں\"\n  }\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=آپ ایک ماہر AI ہیں جو ساختہ شدہ اردو بینر ڈیٹا کو Index POS کے لیے ایک مکمل اور انتہائی تفصیلی AI امیج جنریشن پرامپٹ میں تبدیل کرتے ہیں۔\n\nآپ کو ملنے والا یوزر ان پٹ:\n\noutput: hook، lead_in، main_headline، subheading، body_copy (سب اردو میں)\n\nai_image_config: logo، background، text_overlay\n\nآپ کا کام:\n\nایک پروفیشنل، مکمل اور اردو AI امیج پرامپٹ تیار کریں\n\nبرانڈ، رنگ، لے آؤٹ، فونٹس، اسپیسنگ ہر بار ایک جیسا رکھیں\n\nصرف illustration کے کردار اور پس منظر میں فرق ہو سکتا ہے\n\nتمام متن صرف دیے گئے JSON سے لیا جائے\n\nCanvas & Structure\nپس منظر: خالص سفید (#FFFFFF)\n\nبارڈر: گول کناروں والا گہرا (#1A1A1A)، 4px\n\nلے آؤٹ: عمودی (Vertical Stack)\n\nلوگو — اوپر درمیان\n\nIllustration — سینٹر\n\nاردو متن بلاک — نیچے سینٹر\n\nفوٹر کریڈٹ — سب سے نیچے\n\nColors & Typography\n\nلوگو پیٹلز: سرخ، نیلا، سبز، پیلا\n\nلوگو متن: سیاہ (#1A1A1A)\n\nUrdu text: سیاہ (#111111)، Noto Nastaliq Urdu یا Jameel Noori Nastaleeq، RTL\n\nFooter: ہلکا گرے (#888888) + سیاہ (#111111)\n\nIllustration colors: Full Image Analysis کے مطابق\n\nIllustration Rules\n\nFlat 2D ویکٹر بزنس/analytics سین\n\nدو کردار: ایک پاکستانی مرد اور ایک پاکستانی خاتون\n\nکرداروں کے کپڑے، پوز، عمر، اور جنس ہر بار مختلف ہو\n\nپوسٹ پر Product & Human:\n\nModern POS dashboard widescreen monitor میں\n\nHuman cut-out، نیچے دائیں، صاف بیک گراؤنڈ\n\nFemale: پاکستانی شلوار قمیض + جیکٹ\n\nMale: شلوار قمیض یا بزنس کیجول\n\nLogo Rules\n\n-Use the uploaded logo image strictly as a visual reference and inspiration, preserving its exact colors, shape, proportions, and brand identity, without redesigning or altering the logo in any way\n- Place top-center\n- Logo icon + “IndexPOS” text side-by-side\n\n\n2 لائنیں\n\nFont: Noto Nastaliq Urdu / Jameel Noori Nastaleeq\n\nSize: ~58–62px\n\nRTL، Center aligned\n\nDecorative em-dash (——) اگر موجود ہو تو شامل کریں\n\nFooter\n\nText: \"Powered by uConnect Technologies\"\n\nPoppins Regular & Bold، چھوٹا، سینٹر میں\n\nOutput Rule\n\nصرف یہ JSON واپس کریں:\n\n{\n  \"prompt\": \"یہاں مکمل اور تفصیلی اردو AI امیج جنریشن پرامپٹ ہوگا\"\n}\n\nکوئی اضافی متن نہیں\n\nکوئی وضاحت نہیں\n\nin Final promppt dnt reate breake and new line and /  and Generate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph. \\ ,\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1680,
+        584
+      ],
+      "id": "cd07399f-b70a-4288-903a-12f55150fb51",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1688,
+        808
+      ],
+      "id": "b611dda8-49b3-4ecd-92bd-00cb72ca8773",
+      "name": "DeepSeek Chat Model3",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Full, highly detailed AI image generation prompt for the Index POS banner, including text, logo, background, composition, style, and text hierarchy.\"\n    }\n  },\n  \"required\": [\"prompt\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1816,
+        808
+      ],
+      "id": "4b42d2f7-9062-4754-83c1-b45cadb9ea45",
+      "name": "Structured Output Parser5"
+    },
+    {
+      "parameters": {
+        "name": "= {{ $('Edit Fields3').item.json['Main Hook'] }} Thumbnail",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('media folder1').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        624,
+        1568
+      ],
+      "id": "b09747c6-c0d8-4924-bc72-0e39a927757a",
+      "name": "Upload file2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Media",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -272,
+        1568
+      ],
+      "id": "bcd76518-69d9-4f84-b762-24cdd0087711",
+      "name": "media folder1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "=Index POS {{ $('AI Agent2').item.json.output.hook }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1gRyJ7CvawKzCaTLwJGBAbovWDVbniRtb",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -496,
+        1568
+      ],
+      "id": "77feb1ed-ab0d-4330-811a-d3728185c12b",
+      "name": "Blog folder1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b5b651f-2dbb-4739-9bed-37f07a9c095d",
+              "name": "Facebook_Post",
+              "value": "={{ $('AI Agent4').item.json.output.facebook_post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        1568
+      ],
+      "id": "ad22e235-f275-4424-865a-e97959df52b2",
+      "name": "data1"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1296,
+        1568
+      ],
+      "id": "1cbc7b52-bc06-4082-939a-bd6852258e88",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Edit Fields3').item.json['Main Hook'] }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Blog folder1').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1520,
+        1568
+      ],
+      "id": "0c6797e2-222b-4c80-b39d-040bca76466b",
+      "name": "Upload file3",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 872545133,
+          "mode": "list",
+          "cachedResultName": "IndexPos social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=872545133"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').first().json.ID }}",
+            "Status": "Publish",
+            "Link": "https://publish.buffer.com/channels/691d934cb06e8a5a87c49422?tab=drafts"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Goal",
+              "displayName": "Post Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Hook",
+              "displayName": "Main Hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Core Message",
+              "displayName": "Core Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Features",
+              "displayName": "Key Features",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords",
+              "displayName": "SEO Keywords",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Benefit (optinal)",
+              "displayName": "Benefit (optinal)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Resolution image",
+              "displayName": "Resolution image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "aspet ratio",
+              "displayName": "aspet ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Language Toggle",
+              "displayName": "Language Toggle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2704,
+        896
+      ],
+      "id": "a1e8d730-7e69-49e3-be5b-26350d710416",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b342a66-57ef-4747-bf5d-23817c0413db",
+              "name": "data",
+              "value": "={{ $json.Facebook_Post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        1568
+      ],
+      "id": "12ff3aa7-241e-4c2a-ac36-c2f32887a688",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "twitter",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d63a6bc0-7cc8-4d5b-98f4-d6deb09c7120"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Twitter"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c99e4b86-7f16-47bb-9ce8-482eb19f4432",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "poster",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "poster"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        176,
+        584
+      ],
+      "id": "9633733b-7791-4c69-a2e1-8ca318296777",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b342a66-57ef-4747-bf5d-23817c0413db",
+              "name": "data",
+              "value": "={{ $json.Facebook_Post }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        1344
+      ],
+      "id": "a15e0936-f598-4f49-bf76-0818c5efdc4c",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 457015230,
+          "mode": "list",
+          "cachedResultName": "GilgitApp social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=457015230"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').item.json.ID }}",
+            "Blog Link": "=https://drive.google.com/drive/folders/{{ $json.id }}",
+            "Status": "Generated"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Blog Title ",
+              "displayName": "Blog Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Idea / Topic",
+              "displayName": "Main Idea / Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords ",
+              "displayName": "SEO Keywords ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Image prompt (optional)",
+              "displayName": "Image prompt (optional)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Blog Link",
+              "displayName": "Blog Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1744,
+        1344
+      ],
+      "id": "257dfa6f-8a75-46c7-b5f4-8728be9a7235",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "=Index POS {{ $('Switch1').item.json['Text on Image'] }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Blog folder2').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1520,
+        1344
+      ],
+      "id": "104d257f-6efb-431d-823e-7cf216b586f6",
+      "name": "Upload file4",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1296,
+        1344
+      ],
+      "id": "84739875-f0c1-4350-9a73-9ae8863bc9c6",
+      "name": "Convert to File2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b5b651f-2dbb-4739-9bed-37f07a9c095d",
+              "name": "Facebook_Post",
+              "value": "={{ $('AI Agent7').item.json.output.facebook_post }}",
+              "type": "string"
+            },
+            {
+              "id": "3027ef35-1a69-4622-8a6e-becf0bf1b704",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        1344
+      ],
+      "id": "6f08f0d7-a7f4-4ba9-a2d6-f759294ef788",
+      "name": "data2"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "=Index POS {{ $('Switch1').item.json['Text on Image'] }} Mockup ",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1gRyJ7CvawKzCaTLwJGBAbovWDVbniRtb",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -496,
+        1344
+      ],
+      "id": "142dc275-1489-4994-9876-cf343a438142",
+      "name": "Blog folder2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Media",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -272,
+        1344
+      ],
+      "id": "d023b2c7-bf35-45d4-aad1-963c445aa8f4",
+      "name": "media folder2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "=Index POS {{ $('Switch1').item.json['Text on Image'] }} Mockup",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('media folder2').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        624,
+        1344
+      ],
+      "id": "19231276-f228-4694-9c9d-a1a2c68943b6",
+      "name": "Upload file5",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NxkHcsqsbqGJ855W",
+          "name": "Google Drive account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"ai_image_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"A complete, detailed AI image generation prompt for a Index POS Twitter/X Tweet Card mockup.\"\n    }\n  },\n  \"required\": [\"ai_image_prompt\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1112,
+        1136
+      ],
+      "id": "419630c0-8f08-4783-8028-85910443a636",
+      "name": "Structured Output Parser6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        984,
+        1136
+      ],
+      "id": "42fcafe6-d31e-4d88-9129-9ca4bc31e5f8",
+      "name": "DeepSeek Chat Model4",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate the full AI image prompt for Index POS a marketing Tweet Card using the data below.\n\nUse the exact Twitter/X card mockup style as described in the system instructions.\n\nInput data:\n\nText on image: {{ $('Google Sheets Trigger1').first().json['Text on Image'] }}\nSEO keywords / Hashtags: {{ $('Filter').first().json['SEO Keywords'] }}\n\nImportant rules:\n\nUse the uploaded logo for Index POS (do NOT describe the logo)\n\nInclude the tweet text and hashtags clearly\n\nOutput only valid JSON\n\nOutput format:\n\n{\n  \"ai_image_prompt\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI image prompt engineer creating a high-fidelity Twitter/X Tweet Card mockup for Index POS.\n\nYour task is to generate a single, complete AI image prompt that exactly recreates a realistic Twitter/X post card.\n\n🎯 Core Requirements\n\nPlatform style: Twitter / X\n\nCanvas size:\n\nMinimal, premium, realistic UI look\n\nClean spacing, strong contrast, no clutter\n\n🖤 Background\n\nFull canvas background: very dark charcoal (#0D0D0D)\n\nFlat dark look with subtle grain / noise texture (15–20%)\n\nOptional slight vignette (edges slightly darker)\n\nNo gradients, no patterns\n\n🤍 Tweet Card\n\nWhite rounded rectangle card\n\nSize:\n\nCentered horizontally, slightly above vertical center\n\nCorner radius: ~20px\n\nDrop shadow: soft, dark, diffuse\n\nInternal padding: ~34px\n\n👤 Header Row\n\nLeft: circular profile icon (use uploaded logo)\n\nUsername: Index POS (bold, black)\n\nHandle: @IndexPOS (gray, below username)\n\nVerified badge: Twitter blue check,Immediately after \"IndexPOS\" text (6px gap): Twitter verified\ncheckmark icon ✓ in a filled cyan circle, color #1D9BF0, size 20px.\n\nTop-right: three-dot menu icon\n\n📝 Tweet Content\n\nMain tweet text = Text on image input\n\nFont: system UI (Twitter/X style)\n\nColor: near black\n\nNatural 2-line wrap\n\nClear, readable hierarchy\n\n🔵 Hashtags\n\nUse SEO keywords / hashtags input\n\nColor: Twitter blue\n\nSingle line, clean spacing\n\n🚫 Restrictions\n\nDo NOT describe the logo\n\nDo NOT add extra elements\n\nDo NOT add footers, borders, or watermarks,\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph.\n\n\nDo NOT explain anything\n\n✅ Output Rule\n\nReturn only JSON with one field:\n\n{\n  \"ai_image_prompt\": \"...\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        912
+      ],
+      "id": "7e413914-6e1b-42ca-8a1d-0c5f772f942d",
+      "name": "AI Agent6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"{{ $json.output.ai_image_prompt }},Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo : https://drive.google.com/uc?export=download&id=1LF17HMLn8dWz6xyJ5CG8xD9ZHdvvpLKp\",\n    \"aspect_ratio\": \"1:1\",\n      \"resolution\": \"1K\",\n    \"output_format\": \"png\",\n    \"image_input\": [\n      \"https://drive.google.com/uc?export=download&id=1LF17HMLn8dWz6xyJ5CG8xD9ZHdvvpLKp\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1392,
+        1016
+      ],
+      "id": "4bb494d1-30c2-4d6a-9578-cc5b1466d246",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        1344
+      ],
+      "id": "bb666499-f9fd-4d4b-8c01-5035113a1382",
+      "name": "HTTP Request7"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the nested JSON string\nconst resultJson = JSON.parse($input.first().json.data.resultJson);\n\n// Get the first URL from resultUrls array\nconst imageUrl = resultJson.resultUrls[0];\n\n// Return it\nreturn [\n  {\n    json: {\n      url: imageUrl\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        1344
+      ],
+      "id": "c1fd94ef-b7a2-42e0-803d-50cc230dc590",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3de9ae14-a223-4181-ad2f-297898eb8a30",
+              "name": "data.resultJson",
+              "value": "={{ $('If3').item.json.data.resultJson }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        1344
+      ],
+      "id": "1d9ea0a1-e70a-4619-b678-4463c557177f",
+      "name": "url2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2256,
+        1112
+      ],
+      "id": "9bf36e7d-6199-4799-ba78-c90dfeff901a",
+      "name": "Wait2",
+      "webhookId": "6c972165-36ac-4bab-b7cf-9eed8ab77174"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5dc7f20a-a66b-442d-b7e5-ff8c2112f658",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2032,
+        944
+      ],
+      "id": "c683899c-822b-42ce-8fad-5079f51c94c1",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer 08497f4fa6efe5375fa1c23ce48ab9ec"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1744,
+        1016
+      ],
+      "id": "87daa75e-ef43-4030-aff5-1effa9effc2f",
+      "name": "HTTP Request8"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        632,
+        1136
+      ],
+      "id": "c10db092-29cd-4815-872e-34415036e681",
+      "name": "DeepSeek Chat Model5",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "e1CAmF4GYxN4c6bA",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"facebook_post\": {\n      \"type\": \"string\",\n      \"description\": \"Facebook post text for GilgitApp, generated in English or Urdu based on input language.\"\n    }\n  },\n  \"required\": [\"facebook_post\"],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        760,
+        1136
+      ],
+      "id": "c292b10d-befc-485f-8d4e-60f12152d47d",
+      "name": "Structured Output Parser7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a Facebook post text for GilgitApp using the following input JSON:\n\nPost title: {{ $json['Post Goal'] }}\nMain idea:{{ $json['Main Hook'] }}\nSEO keywords: generate 3 hight SEO hastags according to title and main idea\nAbout GilgitApp:\nGilgitApp is a free online marketplace where users can buy and sell cars, bikes, mobiles, laptops, property, and more.\n\nOutput Format (JSON only):\n\n{\n  \"facebook_post\": \"...\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a social media AI content generator for GilgitApp.\n\nGilgitApp is a free online marketplace that allows users to buy and sell:\n\nCars\n\nBikes\n\nMobiles\n\nLaptops\n\nProperty\n\nOther local products\n\n🎯 Your Task\n\nCreate a Facebook post text using only the data provided in the input JSON.\n\n📌 Rules\n\nUse only these input fields:\n\nBlog Title\n\nMain Idea / Topic\n\nSEO Keywords\n\nHighlight:\n\nFree marketplace\n\nEasy buying & selling\n\nLocal trust and convenience\n\nInclude a clear Call-to-Action (CTA)\n(e.g., Explore now, Post free ad, Buy & sell today)\n\nAdd exactly 5 high-SEO hashtags at the end\n(related to marketplace, buying, selling, GilgitApp)\n\nDo not add explanations or extra text.\nGenerate clean text without escape characters. Do not include \\n, \\n\\n, or any line-break symbols. Write the content as a single smooth paragraph.\n\nOutput only valid JSON in this format:\n\n{\n  \"facebook_post\": \"...\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        912
+      ],
+      "id": "c829cd7c-3935-4742-8655-77fda5d5862b",
+      "name": "AI Agent7"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Language Toggle'] }}",
+                    "rightValue": "English",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b398948d-ca64-43d7-8481-e02eef3835c7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "English"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "87b76a67-5593-4082-b9f7-1c3cca550d0c",
+                    "leftValue": "={{ $json['Language Toggle'] }}",
+                    "rightValue": "Urdu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Urdu"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        400,
+        1016
+      ],
+      "id": "c7370743-33bc-44d4-b6d1-a75cd8e8b7e5",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 704wbvbO2ZvA6Jv68tzzOyojSXc2kX1FqgEwPsjNDn2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $('AI Agent7').first().json.output.facebook_post }}\\\", channelId: \\\"691d934cb06e8a5a87c49422\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $json.url }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2480,
+        896
+      ],
+      "id": "7bc41ed4-778e-4b7e-a1ae-b0a34a576950",
+      "name": "GilgitApp Integrations"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = JSON.parse($input.first().json.data.resultJson);\nreturn [{ url: data.resultUrls[0] }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2256,
+        896
+      ],
+      "id": "9e8dc9c3-1287-48c8-9814-d2ef00905d2a",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 872545133,
+          "mode": "list",
+          "cachedResultName": "IndexPos social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=872545133"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').first().json.ID }}",
+            "Status": "Publish",
+            "Link": "https://publish.buffer.com/channels/691d934cb06e8a5a87c49422?tab=drafts"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Goal",
+              "displayName": "Post Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Hook",
+              "displayName": "Main Hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Core Message",
+              "displayName": "Core Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Features",
+              "displayName": "Key Features",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords",
+              "displayName": "SEO Keywords",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Benefit (optinal)",
+              "displayName": "Benefit (optinal)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Resolution image",
+              "displayName": "Resolution image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "aspet ratio",
+              "displayName": "aspet ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Language Toggle",
+              "displayName": "Language Toggle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3152,
+        32
+      ],
+      "id": "c150c1e9-b7e6-4d3e-8b60-f6dca51a3af6",
+      "name": "Update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 704wbvbO2ZvA6Jv68tzzOyojSXc2kX1FqgEwPsjNDn2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $('AI Agent7').first().json.output.facebook_post }}\\\", channelId: \\\"691d934cb06e8a5a87c49422\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $json.url }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2928,
+        32
+      ],
+      "id": "c9850aa2-32b6-4ff5-939e-c281df634afe",
+      "name": "GilgitApp Integrations1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = JSON.parse($input.first().json.data.resultJson);\nreturn [{ url: data.resultUrls[0] }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2704,
+        464
+      ],
+      "id": "1e7dd3fc-4a35-437d-8466-c523b82a824b",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = JSON.parse($input.first().json.data.resultJson);\nreturn [{ url: data.resultUrls[0] }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2704,
+        32
+      ],
+      "id": "2ad02267-60a4-43d4-a8f8-3fe9fe01a917",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 872545133,
+          "mode": "list",
+          "cachedResultName": "IndexPos social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fc2WAH3CdkshRKTslRX-igbWy_fPkh9HcYd9SdeNUQ8/edit#gid=872545133"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $('Google Sheets Trigger1').first().json.ID }}",
+            "Status": "Publish",
+            "Link": "https://publish.buffer.com/channels/691d934cb06e8a5a87c49422?tab=drafts"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Post Goal",
+              "displayName": "Post Goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Main Hook",
+              "displayName": "Main Hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Core Message",
+              "displayName": "Core Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Features",
+              "displayName": "Key Features",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SEO Keywords",
+              "displayName": "SEO Keywords",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Benefit (optinal)",
+              "displayName": "Benefit (optinal)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Text on Image",
+              "displayName": "Text on Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Resolution image",
+              "displayName": "Resolution image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "aspet ratio",
+              "displayName": "aspet ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Language Toggle",
+              "displayName": "Language Toggle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3152,
+        464
+      ],
+      "id": "1f84350f-f2ff-4bf1-90ec-d632a1fcd966",
+      "name": "Update row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kdsAlHYI98bh6Sbg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 704wbvbO2ZvA6Jv68tzzOyojSXc2kX1FqgEwPsjNDn2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $('AI Agent7').first().json.output.facebook_post }}\\\", channelId: \\\"691d934cb06e8a5a87c49422\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $json.url }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2928,
+        464
+      ],
+      "id": "c0f55ed4-4fd9-4fb3-957c-3a44b46de62b",
+      "name": "GilgitApp Integrations2"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA",
+          "mode": "list",
+          "cachedResultName": "arif_ai_automations",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 425725437,
+          "mode": "list",
+          "cachedResultName": "IndexPos social media",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit#gid=425725437"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        584
+      ],
+      "id": "00a0fc5f-eaf5-46b7-855b-1b0d1af1b9ca",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "KNbkDQizMR80fWCK",
+          "name": "project"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "HTTP Request6": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "df13d073be91752c5a231d79d46b3693",
+            "recordId": "df13d073be91752c5a231d79d46b3693"
+          }
+        }
+      }
+    ],
+    "HTTP Request8": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "df13d073be91752c5a231d79d46b3693",
+            "model": "nano-banana-pro",
+            "state": "success",
+            "param": "{\"input\":\"{\\\"image_input\\\":[\\\"https://drive.google.com/uc?export=download&id=1LF17HMLn8dWz6xyJ5CG8xD9ZHdvvpLKp\\\"],\\\"aspect_ratio\\\":\\\"1:1\\\",\\\"output_format\\\":\\\"png\\\",\\\"prompt\\\":\\\"A realistic Twitter/X Tweet Card mockup for Index POS, minimalist premium UI design on a full canvas background of very dark charcoal (#0D0D0D) with subtle grain texture (15-20%) and slight vignette effect at edges. Centered on canvas, a white rounded rectangle card with 20px corner radius, sized approximately 600x300px, positioned slightly above vertical center with soft dark diffuse drop shadow. Card has internal padding of 34px. In the header row: left side features a circular profile icon (using uploaded Index POS logo), followed by username 'Index POS' in bold black text, below it handle '@IndexPOS' in gray text, immediately after handle a Twitter verified checkmark icon ✓ in a filled cyan circle (#1D9BF0 color, 20px size) with 6px gap. Top-right corner shows a three-dot menu icon. Main tweet content displays text 'Simple & Fast Tracking' in system UI font (Twitter/X style) in near black color, naturally wrapped across 2 lines with clear readable hierarchy. Below tweet text, hashtags in a single line with clean spacing: '#BusinessTracking #InventoryManagement #POSSoftware' in Twitter blue color. No extra elements, no footers, borders, or watermarks. Clean spacing, strong contrast, no clutter, minimal realistic UI look.,Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo : https://drive.google.com/uc?export=download&id=1LF17HMLn8dWz6xyJ5CG8xD9ZHdvvpLKp\\\",\\\"resolution\\\":\\\"1K\\\"}\",\"callBackUrl\":\"https://your-domain.com/api/callback\",\"model\":\"nano-banana-pro\"}",
+            "resultJson": "{\"resultUrls\":[\"https://tempfile.aiquickdraw.com/workers/nano/image_1772091381710_h51166.png\"]}",
+            "failCode": null,
+            "failMsg": null,
+            "costTime": 43,
+            "completeTime": 1772091382365,
+            "createTime": 1772091339125
+          }
+        }
+      }
+    ],
+    "AI Agent6": [
+      {
+        "json": {
+          "output": {
+            "ai_image_prompt": "A realistic Twitter/X Tweet Card mockup for Index POS, minimalist premium UI design on a full canvas background of very dark charcoal (#0D0D0D) with subtle grain texture (15-20%) and slight vignette effect at edges. Centered on canvas, a white rounded rectangle card with 20px corner radius, sized approximately 600x300px, positioned slightly above vertical center with soft dark diffuse drop shadow. Card has internal padding of 34px. In the header row: left side features a circular profile icon (using uploaded Index POS logo), followed by username 'Index POS' in bold black text, below it handle '@IndexPOS' in gray text, immediately after handle a Twitter verified checkmark icon ✓ in a filled cyan circle (#1D9BF0 color, 20px size) with 6px gap. Top-right corner shows a three-dot menu icon. Main tweet content displays text 'Simple & Fast Tracking' in system UI font (Twitter/X style) in near black color, naturally wrapped across 2 lines with clear readable hierarchy. Below tweet text, hashtags in a single line with clean spacing: '#BusinessTracking #InventoryManagement #POSSoftware' in Twitter blue color. No extra elements, no footers, borders, or watermarks. Clean spacing, strong contrast, no clutter, minimal realistic UI look."
+          }
+        }
+      }
+    ],
+    "AI Agent7": [
+      {
+        "json": {
+          "output": {
+            "facebook_post": "Track Every Sale with Ease! Promote your business growth with GilgitApp's free online marketplace where SMEs in Pakistan can buy and sell cars, bikes, mobiles, laptops, property, and other local products with smart convenience. Our free marketplace makes buying and selling easy with local trust and convenience. Post your free ad today and start growing your business! #GilgitApp #FreeMarketplace #BuySellPakistan #LocalBusiness #OnlineShopping"
+          }
+        }
+      }
+    ],
+    "GilgitApp Integrations": [
+      {
+        "json": {
+          "data": {
+            "createPost": {
+              "post": {
+                "id": "69afc3f52d8c36f64a55e86e",
+                "text": "Track Every Sale with Ease! Promote your business growth with GilgitApp's free online marketplace where SMEs in Pakistan can buy and sell cars, bikes, mobiles, laptops, property, and other local products with smart convenience. Our free marketplace makes buying and selling easy with local trust and convenience. Post your free ad today and start growing your business! #GilgitApp #FreeMarketplace #BuySellPakistan #LocalBusiness #OnlineShopping",
+                "status": "draft",
+                "assets": [
+                  {
+                    "source": "https://tempfile.aiquickdraw.com/workers/nano/image_1772091381710_h51166.png",
+                    "thumbnail": "https://tempfile.aiquickdraw.com/workers/nano/image_1772091381710_h51166.png"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "HTTP Request3": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "0ccde20b8afd556d00cb0b12b75ce429",
+            "recordId": "0ccde20b8afd556d00cb0b12b75ce429"
+          }
+        }
+      }
+    ],
+    "AI Agent": [
+      {
+        "json": {
+          "output": {
+            "hook": "Track Every Sale with Ease!",
+            "lead_in": "Smart retail management for Pakistani SMEs",
+            "main_headline": "Simple & Fast Tracking",
+            "subheading": "Advanced sales management tools to monitor performance and make smarter decisions",
+            "body_copy": "Index POS gives you real-time monitoring and all-in-one business control. Upgrade your business today and take control of sales, inventory, and growth."
+          }
+        }
+      }
+    ],
+    "AI Agent3": [
+      {
+        "json": {
+          "output": {
+            "facebook_post": "Track Every Sale with Ease! IndexPOS gives you advanced sales management tools to monitor performance and make smarter decisions — all in one place. With features like advanced sales management, real-time monitoring, and smarter decision-making capabilities, you can upgrade your business today 🚀. Experience Simple & Fast Tracking with Index POS! Ready to transform your retail management? Try Index POS now and take control of your sales! #IndexPOS #RetailManagement #SalesTracking #SMEsPakistan #BusinessGrowth"
+          }
+        }
+      }
+    ],
+    "GilgitApp Integrations1": [
+      {
+        "json": {
+          "data": {
+            "createPost": {
+              "post": {
+                "id": "69afcacb2d8c36f64a55fa4b",
+                "text": "Track Every Sale with Ease! Promote your business growth with GilgitApp's free online marketplace where SMEs in Pakistan can buy and sell cars, bikes, mobiles, laptops, property, and other local products with smart convenience. Our free marketplace makes buying and selling easy with local trust and convenience. Post your free ad today and start growing your business! #GilgitApp #FreeMarketplace #BuySellPakistan #LocalBusiness #OnlineShopping",
+                "status": "draft",
+                "assets": [
+                  {
+                    "source": "https://tempfile.aiquickdraw.com/r/0ccde20b8afd556d00cb0b12b75ce429_1773128292_tjhrvuq5.png",
+                    "thumbnail": "https://tempfile.aiquickdraw.com/r/0ccde20b8afd556d00cb0b12b75ce429_1773128292_tjhrvuq5.png"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "AI Agent5": [
+      {
+        "json": {
+          "output": {
+            "prompt": "ایک پروفیشنل مارکیٹنگ بینر بنائیں جس میں سفید پس منظر (#FFFFFF) اور گول کناروں والا گہرا بارڈر (#1A1A1A، 4px) ہو۔ عمودی لے آؤٹ استعمال کریں: اوپر درمیان میں لوگو، سینٹر میں illustration، اور نیچے سینٹر میں اردو متن بلاک۔ لوگو میں سرخ، نیلا، سبز، پیلا پیٹلز اور سیاہ متن (#1A1A1A) ہو۔ لوگو آئیکن اور 'IndexPOS' متن سائیڈ بائی سائیڈ رکھیں۔ Illustration میں فلیٹ 2D ویکٹر بزنس/analytics سین بنائیں جس میں دو پاکستانی کردار ہوں: ایک پاکستانی مرد اور ایک پاکستانی خاتون۔ مرد شلوار قمیض یا بزنس کیجول پہنے ہوئے ہو، خاتون پاکستانی شلوار قمیض اور جیکٹ پہنے ہوئے ہو۔ دونوں کرداروں کی عمر، کپڑے، پوز مختلف ہوں۔ Illustration میں modern POS dashboard widescreen monitor دکھائیں اور human cut-out نیچے دائیں جانب صاف بیک گراؤنڈ پر ہو۔ اردو متن سیاہ رنگ (#111111) میں ہو، Noto Nastaliq Urdu یا Jameel Noori Nastaleeq فونٹ میں، RTL سینٹر الائنڈ۔ متن کی دو لائنیں ہوں، سائز 58-62px۔ پہلی لائن: 'ہر سیلز کو آسانی سے ٹریک کریں!' دوسری لائن: 'Index POS آپ کے کاروبار کو نئی بلندیوں پر لے جاتا ہے'۔ ان لائنوں کے درمیان decorative em-dash (——) شامل کریں۔ سب سے نیچے فوٹر میں 'Powered by uConnect Technologies' لکھیں، Poppins Regular & Bold فونٹ میں، ہلکا گرے (#888888) اور سیاہ (#111111) رنگوں میں، سینٹر الائنڈ۔ بینر میں تمام ٹیکسٹ واضح اور پڑھنے کے قابل ہو۔ illustration کے رنگ full image analysis کے مطابق ہوں۔ لوگو کو visual reference کے طور پر استعمال کریں اور اس کے exact colors, shape, proportions, اور brand identity کو preserve کریں، لوگو کو redesign یا alter نہ کریں۔"
+          }
+        }
+      }
+    ],
+    "AI Agent4": [
+      {
+        "json": {
+          "output": {
+            "facebook_post": "ہر فروخت کو آسانی سے ٹریک کریں! IndexPOS آپ کو جدید سیلز مینجمنٹ ٹولز فراہم کرتا ہے جو آپ کو کارکردگی پر نظر رکھنے اور زیادہ ذہین فیصلے کرنے میں مدد دیتا ہے — سب ایک جگہ پر۔ حقیقی وقت میں مانیٹرنگ، جدید سیلز مینجمنٹ، اور بہتر فیصلے سازی کی سہولیات سے لیس یہ پلیٹ فارم آپ کے کاروبار کو نئی بلندیوں پر لے جائے گا۔ آج ہی اپنے کاروبار کو اپ گریڈ کریں اور اسمارٹ ریٹیل مینجمنٹ کا تجربہ حاصل کریں۔ IndexPOS کو آزمائیں اور اپنے کاروبار کو ترقی دیں! 🚀 #IndexPOS #SmartRetail #SMEsPakistan #BusinessGrowth #SalesManagement"
+          }
+        }
+      }
+    ],
+    "HTTP Request5": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "4bffccf561d599302ddac7f42097fd1b",
+            "recordId": "4bffccf561d599302ddac7f42097fd1b"
+          }
+        }
+      }
+    ],
+    "HTTP Request": [
+      {
+        "json": {
+          "code": 200,
+          "msg": "success",
+          "data": {
+            "taskId": "4bffccf561d599302ddac7f42097fd1b",
+            "model": "nano-banana-2",
+            "state": "success",
+            "param": "{\"input\":\"{\\\"image_input\\\":[\\\"https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\\\"],\\\"aspect_ratio\\\":\\\"3:4\\\",\\\"output_format\\\":\\\"png\\\",\\\"prompt\\\":\\\"ایک پروفیشنل مارکیٹنگ بینر بنائیں جس میں سفید پس منظر (#FFFFFF) اور گول کناروں والا گہرا بارڈر (#1A1A1A، 4px) ہو۔ عمودی لے آؤٹ استعمال کریں: اوپر درمیان میں لوگو، سینٹر میں illustration، اور نیچے سینٹر میں اردو متن بلاک۔ لوگو میں سرخ، نیلا، سبز، پیلا پیٹلز اور سیاہ متن (#1A1A1A) ہو۔ لوگو آئیکن اور 'IndexPOS' متن سائیڈ بائی سائیڈ رکھیں۔ Illustration میں فلیٹ 2D ویکٹر بزنس/analytics سین بنائیں جس میں دو پاکستانی کردار ہوں: ایک پاکستانی مرد اور ایک پاکستانی خاتون۔ مرد شلوار قمیض یا بزنس کیجول پہنے ہوئے ہو، خاتون پاکستانی شلوار قمیض اور جیکٹ پہنے ہوئے ہو۔ دونوں کرداروں کی عمر، کپڑے، پوز مختلف ہوں۔ Illustration میں modern POS dashboard widescreen monitor دکھائیں اور human cut-out نیچے دائیں جانب صاف بیک گراؤنڈ پر ہو۔ اردو متن سیاہ رنگ (#111111) میں ہو، Noto Nastaliq Urdu یا Jameel Noori Nastaleeq فونٹ میں، RTL سینٹر الائنڈ۔ متن کی دو لائنیں ہوں، سائز 58-62px۔ پہلی لائن: 'ہر سیلز کو آسانی سے ٹریک کریں!' دوسری لائن: 'Index POS آپ کے کاروبار کو نئی بلندیوں پر لے جاتا ہے'۔ ان لائنوں کے درمیان decorative em-dash (——) شامل کریں۔ سب سے نیچے فوٹر میں 'Powered by uConnect Technologies' لکھیں، Poppins Regular & Bold فونٹ میں، ہلکا گرے (#888888) اور سیاہ (#111111) رنگوں میں، سینٹر الائنڈ۔ بینر میں تمام ٹیکسٹ واضح اور پڑھنے کے قابل ہو۔ illustration کے رنگ full image analysis کے مطابق ہوں۔ لوگو کو visual reference کے طور پر استعمال کریں اور اس کے exact colors, shape, proportions, اور brand identity کو preserve کریں، لوگو کو redesign یا alter نہ کریں۔, Place the logo in the top-left corner, sized at 6% of the image width, using this exact image as the logo: https://drive.google.com/uc?export=download&id=1RzqqfwhoT8VluaU89kjzj7D74tM6wJuQ\\\",\\\"resolution\\\":\\\"2K\\\"}\",\"callBackUrl\":\"https://your-domain.com/api/callback\",\"model\":\"nano-banana-2\"}",
+            "resultJson": "{\"resultUrls\":[\"https://tempfile.aiquickdraw.com/images/1773128668839-5lx7d87qmhv.png\"]}",
+            "failCode": null,
+            "failMsg": null,
+            "costTime": 69,
+            "completeTime": 1773128670906,
+            "createTime": 1773128600565
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "media folder": {
+      "main": [
+        [
+          {
+            "node": "url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog folder": {
+      "main": [
+        [
+          {
+            "node": "media folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser4": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Upload file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser5": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file2": {
+      "main": [
+        [
+          {
+            "node": "data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "media folder1": {
+      "main": [
+        [
+          {
+            "node": "url1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog folder1": {
+      "main": [
+        [
+          {
+            "node": "media folder1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Upload file3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file3": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file4": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "Upload file4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog folder2": {
+      "main": [
+        [
+          {
+            "node": "media folder2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "media folder2": {
+      "main": [
+        [
+          {
+            "node": "url2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file5": {
+      "main": [
+        [
+          {
+            "node": "data2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser6": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent6",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent6",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent6": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request7": {
+      "main": [
+        [
+          {
+            "node": "Upload file5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request8": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser7": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent7": {
+      "main": [
+        [
+          {
+            "node": "AI Agent6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GilgitApp Integrations": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GilgitApp Integrations1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GilgitApp Integrations2": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a0fdb915-a293-4991-8876-b1a58f27424a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f69eeec8ea9daa545fcc324365536c2040645353f7993a4239619466c43daea"
+  },
+  "id": "HMYc9cZYnf7pCLPO",
+  "tags": []
+}

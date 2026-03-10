@@ -1,0 +1,703 @@
+{
+  "name": "GilgitApp Web  To Facebook POST DAILY (Finalize and Done)",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.gilgit.app/v2/item/web/home-feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        128,
+        -224
+      ],
+      "id": "0158ff59-f6be-4c38-aafc-f1f917d3e4cd",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f02e76ce-c551-4c4e-9862-b1214eefcc88",
+              "name": "Title",
+              "value": "={{ $json.sectionData[0].values.title }}",
+              "type": "string"
+            },
+            {
+              "id": "919ac315-4cf2-4f61-b06a-7a072f7c03cb",
+              "name": "=price",
+              "value": "={{ $json.sectionData[0].values.price }}",
+              "type": "string"
+            },
+            {
+              "id": "afcc31f2-32c3-4beb-9a29-803af3001959",
+              "name": "=location",
+              "value": "={{ $json.sectionData[0].values.location }}",
+              "type": "string"
+            },
+            {
+              "id": "14b762b7-07eb-4aa5-bde2-301fdde4c366",
+              "name": "=modelYear",
+              "value": "={{ $json.sectionData[0].values.modelYear }}",
+              "type": "string"
+            },
+            {
+              "id": "e53bf2cd-7c94-4e13-846c-8ddde2d33762",
+              "name": "=type",
+              "value": "={{ $json.sectionData[0].type }}",
+              "type": "string"
+            },
+            {
+              "id": "38b27011-95b6-4249-b573-e5325dda82d3",
+              "name": "=full_name",
+              "value": "={{ $json.sectionData[0].user.profile.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "b877f426-4a9e-496a-93e4-eb478f8df11d",
+              "name": "=viewsCounter",
+              "value": "={{ $json.sectionData[0].viewsCounter }}",
+              "type": "string"
+            },
+            {
+              "id": "5cf4563b-95b9-44ca-96be-dae8001a3afe",
+              "name": "=created_at",
+              "value": "={{ $json.sectionData[0].created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "60472ee6-5e00-4d0b-bdf8-0a6f4fb09f62",
+              "name": "images",
+              "value": "={{ $json.sectionData[0].values.imagePicker[1].path }},{{ $json.sectionData[0].values.imagePicker[1].path }},{{ $json.sectionData[2].values.imagePicker[1].path }}",
+              "type": "string"
+            },
+            {
+              "id": "b4582c3c-339e-40dd-8402-9aacdfd7bb07",
+              "name": "status",
+              "value": "={{ $json.sectionData[0].values.imagePicker[0].status }}",
+              "type": "string"
+            },
+            {
+              "id": "8c73a80e-69fc-46bc-bffe-7e028a6f9067",
+              "name": "id",
+              "value": "={{ $json.sectionData[0].id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        -224
+      ],
+      "id": "a220aaec-6bca-4a99-ab7f-794316173e23",
+      "name": "data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a6ecb0ee-0f0c-43f3-872c-8512f2f31cd4",
+              "leftValue": "={{ $json.Title }}",
+              "rightValue": "bikes",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        -224
+      ],
+      "id": "7e43d703-234d-4178-8d6f-08b7f90bd8ab",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7cec9310-9cc2-4e5b-b9c5-3da067117feb",
+              "leftValue": "={{ $json.created_at }}",
+              "rightValue": "={{ $now.minus($('Google Sheets Trigger').item.json.Days,\"days\") }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        -224
+      ],
+      "id": "914099df-f527-44c9-8d29-96421ec1b6df",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ea87b4df-6ba1-490f-b699-8a48c4cf65f1",
+              "leftValue": "={{ $json.sectionData[0].values.imagePicker[1].status }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        -224
+      ],
+      "id": "f43c05a0-89ed-43d9-97d5-646de988bd63",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA",
+          "mode": "list",
+          "cachedResultName": "arif_ai_automations",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1110490404,
+          "mode": "list",
+          "cachedResultName": "GilgitApp Web  To Facebook POST",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NJoir-ORhLPT-YlxQepI1dUyO1TszhDRoWQs_AOnBvA/edit#gid=1110490404"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -272
+      ],
+      "id": "060b737f-4cda-4208-8540-22f7562c9bb3",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "KNbkDQizMR80fWCK",
+          "name": "project"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6ded1c24-a505-4a74-acf4-158b77c6398b",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "={{ $('Google Sheets Trigger').item.json.Category }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        -224
+      ],
+      "id": "353710f0-8379-43ea-9312-24fc791d7305",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate a Facebook post for the following item data:\n\nItem Data: {{ $('Edit Fields1').first().json.data }}\nItem URL: {{ $json.finalUrl }}\n\nUse all fields such as title, model, price, contact numbers, and link. \nMake it a single continuous text with no line breaks or \\n characters.\nInclude hashtags: according to item details .\nlike example : ==> #gilgitapp #buyandsell #hondacg125 #125bike #usedbikes #ghizer #gilgit #hunza #skardu #gahkuch #chilas\n ",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a social media post generator. \nCreate a Facebook post description using the item JSON. \nUse all available details: title, model, price, contact, URL. \nAlways generate the output as a single continuous text. Do not include line breaks, new lines, or \\n characters. All information should be in plain text format.\n\nFormat like this:\n\n𝐇𝐨𝐧𝐝𝐚 𝐂𝐆 𝟏𝟐𝟓 𝐁𝐢𝐤𝐞 𝐟𝐨𝐫 𝐒𝐚𝐥𝐞 𝐢𝐧 𝐆𝐢𝐥𝐠𝐢𝐭 ((Urgent Sale!))\n𝐌𝐨𝐝𝐞𝐥: 𝟐𝟎𝟏𝟗\n𝐏𝐫𝐢𝐜𝐞: 𝐏𝐊𝐑 𝟏𝟓𝟎,𝟎𝟎𝟎\n𝐂𝐨𝐧𝐭𝐚𝐜𝐭 𝐍𝐨: 03165763810 / 92 344 3129046\n𝐌𝐨𝐫𝐞 𝐈𝐧𝐟𝐨: [item URL]\n\nAdd relevant hashtags at the end like This :\n#gilgitapp #buyandsell #hondacg125 #125bike #usedbikes #ghizer #gilgit #hunza #skardu #gahkuch #chilas"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2144,
+        -224
+      ],
+      "id": "87bdd949-d1dc-4194-be30-5fb576acd820",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "652428a2-ca63-4adf-ac20-3e03529850bf",
+              "name": "Title",
+              "value": "={{ $('If3').item.json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "803742e1-4d28-4adf-bbfc-9a2cda054d67",
+              "name": "id",
+              "value": "={{ $('If3').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1696,
+        -224
+      ],
+      "id": "24e1e6df-daa2-47bb-ade0-ccd189a5cbcc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get title and id from input\nconst title = $input.first().json.Title;\nconst id = $input.first().json.id;\n\n// Convert title to URL-friendly slug\nconst slug = title\n  .toLowerCase()                  // convert to lowercase\n  .replace(/[^a-z0-9\\s-]/g, '')   // remove special characters except letters, numbers, spaces, hyphens\n  .trim()                          // remove extra spaces\n  .replace(/\\s+/g, '-')            // replace spaces with hyphens\n\n// Capitalize first letter of each word (optional, to match your example)\nconst slugCapitalized = slug\n  .split('-')\n  .map(word => word.charAt(0).toUpperCase() + word.slice(1))\n  .join('-');\n\n// Merge into final URL\nconst finalUrl = `https://gilgit.app/details/${slugCapitalized}/${id}`;\n\nreturn { finalUrl };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        -224
+      ],
+      "id": "dc0df459-c5bb-42ae-ab68-09230160e745",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4adb51aa-8866-4e39-8847-36a580663038",
+              "name": "data",
+              "value": "={{ $json.toJsonString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1472,
+        -224
+      ],
+      "id": "43faf5ed-1a82-4b5c-b206-f3ba4b224137",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        0
+      ],
+      "id": "d73843a4-457f-4f90-9412-8b8e18e41d5c",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "ZBhLWY8ntDyWzHoL",
+          "name": "DeepSeek account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"description\": {\n      \"type\": \"string\",\n      \"description\": \"Main text or caption describing the post\"\n    },\n    \"hashtags\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\": \"List of hashtags related to the post\"\n    }\n  },\n  \"required\": [\"description\", \"hashtags\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2288,
+        0
+      ],
+      "id": "e8ce6bb6-12b9-4697-8b00-a4e63d22fef4",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5d36b332-34cb-4565-84bd-99b5ddd59678",
+              "name": "POST",
+              "value": "={{ $('AI Agent').item.json.output.description }}{{ $('AI Agent').item.json.output.hashtags }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2944,
+        -224
+      ],
+      "id": "be698f5c-0bd1-4107-86f3-e500cb3f7451",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer m8rmXLG5Ux3vSEw0gs3E8OsWlOTcWFETu4FRXx8faHF"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation CreateDraft { createPost(input: { text: \\\"{{ $json.POST }}\\\", channelId: \\\"62000dafc2bd2585f9011a72\\\", schedulingType: automatic, mode: addToQueue, saveToDraft: true, metadata: { facebook: { type: post } }, assets: { images: [{ url: \\\"{{ $('images').item.json['1'] }}\\\" },{ url: \\\"{{ $('images').item.json['2'] }}\\\" },{ url: \\\"{{ $('images').item.json['3'] }}\\\" },{ url: \\\"{{ $('images').item.json['4'] }}\\\" }] } }) { ... on PostActionSuccess { post { id text status assets { ... on ImageAsset { source thumbnail } } } } ... on InvalidInputError { message } ... on UnauthorizedError { message } ... on UnexpectedError { message } } }\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3168,
+        -224
+      ],
+      "id": "8823965f-ee8a-42e2-b5bb-cb0f71567d47",
+      "name": "GilgitApp Integrations"
+    },
+    {
+      "parameters": {
+        "content": "## GilgitApp Web  To Facebook POST DAILY\n**Double click** ",
+        "height": 704,
+        "width": 3824
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -336,
+        -560
+      ],
+      "typeVersion": 1,
+      "id": "4df1d7de-828d-4379-ad9e-3506355eb3ce",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.gilgit.app/v1/item/web/item-view?id={{ $('Edit Fields').first().json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2496,
+        -224
+      ],
+      "id": "537f8e10-1546-4064-a3d5-615f762c9fe5",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "037147ec-a948-4a0e-837e-969d16b1f3e8",
+              "name": "1",
+              "value": "={{ $json.result.item.values.imagePicker[0].path }}",
+              "type": "string"
+            },
+            {
+              "id": "67b810af-1956-4c18-a588-20151b89473c",
+              "name": "2",
+              "value": "={{ $json.result.item.values.imagePicker[1].path }}",
+              "type": "string"
+            },
+            {
+              "id": "4c5c1d84-5ee8-4b64-9b63-da46fff1caca",
+              "name": "3",
+              "value": "={{ $json.result.item.values.imagePicker[2].path }}",
+              "type": "string"
+            },
+            {
+              "id": "00155c3a-c09a-49c0-8ba3-8a6c7c60e24b",
+              "name": "4",
+              "value": "={{ $json.result.item.values.imagePicker[3].path }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2720,
+        -224
+      ],
+      "id": "cc3bd145-7d76-42b5-a847-67b92ef6435a",
+      "name": "images"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "GilgitApp Integrations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "images": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "957c9258-ab06-42cb-94f4-2ba499eab7cc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f69eeec8ea9daa545fcc324365536c2040645353f7993a4239619466c43daea"
+  },
+  "id": "4018Em7gEZIMWg57",
+  "tags": []
+}
